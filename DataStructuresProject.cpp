@@ -6,7 +6,7 @@
 int main()
 {
     std::cout << "Hello World!\n";
-    std::cout << "Testing code." << std::endl;
+    std::cout << "Ibrahim is gay" << std::endl;
 }
 
 
