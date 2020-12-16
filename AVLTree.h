@@ -97,6 +97,15 @@ public:
         return n2;
     }
 
+    /* How should you be inserting in main?
+        AVL<int> obj;
+	    obj.root = obj.insert(obj.root, 1);
+	    obj.root = obj.insert(obj.root, 2);
+	    obj.root = obj.insert(obj.root, 3);
+	    obj.preorder(obj.root);
+	    cout << endl;
+                                                */
+
     template<class T>
     void insert(T key) { //Inserts data into tree
         root = insert(root, key);
@@ -179,6 +188,15 @@ public:
 
         return current;
     }
+
+    /*How should you be deleting in main?
+       	obj.root = obj.deleteNode(obj.root, 11);
+	    obj.root = obj.deleteNode(obj.root, 10);
+	    obj.root = obj.deleteNode(obj.root, 9);
+	    obj.root = obj.deleteNode(obj.root, 6);
+	    obj.preorder(obj.root);
+	    cout << endl; 
+                                                    */
 
     //Deletion
     template<class T>
