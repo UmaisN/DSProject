@@ -107,7 +107,8 @@ public:
                                                 */
 
     template<class T>
-    void insert(T key) { //Inserts data into tree
+    void insert(T key) 
+    { //Inserts data into tree
         root = insert(root, key);
     }
     template<class T>
