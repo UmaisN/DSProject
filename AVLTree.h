@@ -204,7 +204,7 @@ public:
         root = deleteNode(root, key);
     }
 
-    //DeleteNode Extension
+    //Delete Node Extension
     template<class T>
     Node<T>* deleteNode(Node<T>* root, T key)
     {
