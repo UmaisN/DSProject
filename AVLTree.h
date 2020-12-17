@@ -198,11 +198,15 @@ public:
 	    cout << endl; 
                                                     */
 
-    //Deletion
+    template<class T>
+    void deleteNode(T key) { //Deletes data from tree
+        root = deleteNode(root, key);
+    }
+
+    //DeleteNode Extension
     template<class T>
     Node<T>* deleteNode(Node<T>* root, T key)
     {
-
         // STEP 1: PERFORM STANDARD BST DELETE  
         if (root == NULL)
             return root;
@@ -257,7 +261,6 @@ public:
                     temp->key);
             }
         }
-
         // If the tree had only one node 
         // then return  
         if (root == NULL)
@@ -303,6 +306,29 @@ public:
 
         return root;
     }
+
+    //Search Function
+    template <class T>
+    Node<T>* searchNode(T key) {
+        Node<T>* trav = root;
+        while (trav != nullptr)
+        {
+            if (trav->key == key)
+            {
+                return trav;
+            }
+            else if (key < trav->key)
+            {
+                trav = trav->left;
+            }
+            else
+            {
+                trav = trav->right;
+            }
+        }
+        return nullptr;
+    }
+
     ~AVL() {
         delete root;
     }
