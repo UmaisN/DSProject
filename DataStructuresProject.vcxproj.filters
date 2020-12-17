@@ -27,4 +27,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
+  <ItemGroup>
+    <None Include="FinalProject_final.pdf">
+      <Filter>Resource Files</Filter>
+    </None>
+  </ItemGroup>
 </Project>
