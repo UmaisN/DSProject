@@ -140,10 +140,13 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="DataStructuresProject.cpp" />
+    <ClCompile Include="sha256.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="AVLTree.h" />
-    <ClInclude Include="Header.h" />
+    <ClInclude Include="Hashing.h" />
+    <ClInclude Include="InfInt.h" />
+    <ClInclude Include="sha256.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="FinalProject_final.pdf" />
