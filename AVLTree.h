@@ -2,20 +2,23 @@
 #include <iostream>
 using namespace std;
 
-template<class T>
+template<class T, class S>
 class Node {
 public:
+    S data;
     T key;
     int height;
     Node* left;
     Node* right;
     Node() {
+        data = NULL;
         key = -1;
         left = NULL;
         right = NULL;
         height = 0;
     }
-    Node(T value) {
+    Node(T value, S dat) {
+        data = dat;
         key = value;
         left = NULL;
         right = NULL;
@@ -23,12 +26,11 @@ public:
     }
 };
 
-template<class T>
+template<class T,class S>
 class AVL
 {
 public:
-    Node<T>* root;
-
+    Node<T,S>* root;
     AVL() {
         root = NULL;
     }
@@ -41,8 +43,8 @@ public:
         }
     }
 
-    template<class T>
-    int getHeight(Node<T>* node) { //Returns height of node
+    template<class T,class S>
+    int getHeight(Node<T,S>* node) { //Returns height of node
         if (node == NULL) {
             return -1;
         }
@@ -51,8 +53,8 @@ public:
         }
     }
 
-    template<class T>
-    int getBalanceFactor(Node<T>* node) { //getting bf
+    template<class T,class S>
+    int getBalanceFactor(Node<T,S>* node) { //getting bf
         return getHeight(node->left) - getHeight(node->right);
     }
 
@@ -62,22 +64,24 @@ public:
         cout << endl;
     }
     
-    template<class T>
-    void display(Node<T>* start) { //Displays Function Extension
+    template<class T,class S>
+    void display(Node<T,S>* start) { //Displays Function Extension
         if (start == NULL) {
             return;
         }
         else {
             display(start->left);
+            cout << "(";
             cout << start->key << ",";
+            cout << start->data << "),";
             display(start->right);
         }
     }
 
-    template<class T>
-    Node<T>* rightRotate(Node<T>* node) { //Right Rotator, remove comments dashes to check if it is working
+    template<class T,class S>
+    Node<T,S>* rightRotate(Node<T,S>* node) { //Right Rotator, remove comments dashes to check if it is working
         //cout << "Right Rotating node " << node->key << endl;
-        Node<T>* n2 = node->left;
+        Node<T,S>* n2 = node->left;
         node->left = n2->right;
         n2->right = node;
         n2->height = max(getHeight(n2->left), getHeight(n2->right)) + 1;
@@ -85,10 +89,10 @@ public:
         //cout << "Returning node " << n2->key << " as Parent" << endl;
         return n2;
     }
-    template<class T>
-    Node<T>* leftRotate(Node<T>* node) { //Left Rotator, remove comments dashes to check if it is working
+    template<class T,class S>
+    Node<T,S>* leftRotate(Node<T,S>* node) { //Left Rotator, remove comments dashes to check if it is working
         //cout << "Left Rotating node " << node->key << endl;
-        Node<T>* n2 = node->right;
+        Node<T,S>* n2 = node->right;
         node->right = n2->left;
         n2->left = node;
         n2->height = max(getHeight(n2->left), getHeight(n2->right)) + 1;
@@ -106,18 +110,18 @@ public:
 	    cout << endl;
                                                 */
 
-    template<class T>
-    void insert(T key) 
+    template<class T,class S>
+    void insert(T key,S data) 
     { //Inserts data into tree
-        root = insert(root, key);
+        root = insert(root, key,data);
     }
-    template<class T>
-    Node<T>* insert(Node<T>* start, T key) { //Insert function extension
+    template<class T,class S>
+    Node<T,S>* insert(Node<T,S>* start, T key,S data) { //Insert function extension
         if (start == NULL) {
-            start = new Node<T>(key);
+            start = new Node<T,S>(key,data);
         }
         else if (key < start->key) {
-            start->left = insert(start->left, key);
+            start->left = insert(start->left, key,data);
             int bf = getBalanceFactor(start);
             if (bf == 2 || bf == -2) {
                 if (start->left->key > key) {
@@ -126,7 +130,7 @@ public:
             }
         }
         else if (key > start->key) {
-            start->right = insert(start->right, key);
+            start->right = insert(start->right, key,data);
             int bf = getBalanceFactor(start);
             if (bf == 2 || bf == -2) {
                 if (start->right->key < key) {
@@ -143,45 +147,48 @@ public:
     /*
 * Inorder Traversal of AVL Tree
 */
-    template<class T>
-    void inorder(Node<T>* tree)
+    template<class T,class S>
+    void inorder(Node<T,S>* tree)
     {
         if (tree == NULL)
             return;
         inorder(tree->left);
-        cout << tree->key << " ";
+        cout << "(";
+        cout << tree->key << "," << tree->data << ") ";
         inorder(tree->right);
     }
     /*
     * Preorder Traversal of AVL Tree
     */
-    template<class T>
-    void preorder(Node<T>* tree)
+    template<class T,class S>
+    void preorder(Node<T,S>* tree)
     {
         if (tree == NULL)
             return;
-        cout << tree->key << " ";
+        cout << "(";
+        cout << tree->key << "," << tree->data << ") ";
         preorder(tree->left);
         preorder(tree->right);
     }
     /*
     * Postorder Traversal of AVL Tree
     */
-    template<class T>
-    void postorder(Node<T>* tree)
+    template<class T,class S>
+    void postorder(Node<T,S>* tree)
     {
         if (tree == NULL)
             return;
         postorder(tree->left);
         postorder(tree->right);
-        cout << tree->key << " ";
+        cout << "(";
+        cout << tree->key << "," << tree->data << ") ";
     }
     //------------------------------------
     //MinVal Node
-    template<class T>
-    Node<T>* minValueNode(Node<T>* node)
+    template<class T,class S>
+    Node<T,S>* minValueNode(Node<T,S>* node)
     {
-        Node<T>* current = node;
+        Node<T,S>* current = node;
 
         /* loop down to find the leftmost leaf */
         while (current->left != NULL)
@@ -199,14 +206,14 @@ public:
 	    cout << endl; 
                                                     */
 
-    template<class T>
-    void deleteNode(T key) { //Deletes data from tree
-        root = deleteNode(root, key);
+    template<class T,class S>
+    void deleteNode(T key,S data) { //Deletes data from tree
+        root = deleteNode(root, key,data);
     }
 
     //Delete Node Extension
-    template<class T>
-    Node<T>* deleteNode(Node<T>* root, T key)
+    template<class T,class S>
+    Node<T,S>* deleteNode(Node<T,S>* root, T key,S data)
     {
         // STEP 1: PERFORM STANDARD BST DELETE  
         if (root == NULL)
@@ -216,13 +223,13 @@ public:
         // than the root's key, then it lies 
         // in left subtree  
         if (key < root->key)
-            root->left = deleteNode(root->left, key);
+            root->left = deleteNode(root->left, key, data);
 
         // If the key to be deleted is greater  
         // than the root's key, then it lies  
         // in right subtree  
         else if (key > root->key)
-            root->right = deleteNode(root->right, key);
+            root->right = deleteNode(root->right, key, data);
 
         // if key is same as root's key, then  
         // This is the node to be deleted  
@@ -232,7 +239,7 @@ public:
             if ((root->left == NULL) ||
                 (root->right == NULL))
             {
-                Node<T>* temp = root->left ?
+                Node<T,S>* temp = root->left ?
                     root->left :
                     root->right;
 
@@ -251,15 +258,16 @@ public:
             {
                 // node with two children: Get the inorder  
                 // successor (smallest in the right subtree)  
-                Node<T>* temp = minValueNode(root->right);
+                Node<T,S>* temp = minValueNode(root->right);
 
                 // Copy the inorder successor's  
                 // data to this node  
                 root->key = temp->key;
+                root->data = temp->data;
 
                 // Delete the inorder successor  
                 root->right = deleteNode(root->right,
-                    temp->key);
+                    temp->key,temp->data);
             }
         }
         // If the tree had only one node 
@@ -309,9 +317,9 @@ public:
     }
 
     //Search Function
-    template <class T>
-    Node<T>* searchNode(T key) {
-        Node<T>* trav = root;
+    template <class T,class S>
+    Node<T,S>* searchNode(T key) {
+        Node<T,S>* trav = root;
         while (trav != nullptr)
         {
             if (trav->key == key)
