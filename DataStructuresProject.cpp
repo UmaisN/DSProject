@@ -13,16 +13,13 @@ int main()
 
 
     //Testing AVL
-    AVL<int> tree;
-    tree.insert(1);
-    tree.insert(2);
-    tree.insert(3);
-    tree.insert(4);
-    tree.insert(5);
-
-    tree.preorder(tree.root);
-
-
+    AVL<int, int> obj;
+    obj.insert(1, 30);
+    obj.insert(3, 50);
+    obj.insert(2, 70);
+    obj.display();
+    obj.deleteNode(3);
+    obj.display();
     //Menu
     int choice = 0;
     while (choice != 10) {
