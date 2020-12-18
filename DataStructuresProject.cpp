@@ -11,15 +11,15 @@ int main()
     string key = hash_value("abcdefgh", 30);
     cout << key << endl;
 
-    //Result first char should be 0 (NULL), rest should match with online Hasher -- RESULT PASSED (3608bc)
+    //Result first char should be 0 (NULL), rest should match with online Hasher -- RESULT PASSED (3608bca)
     key = hash_value("xyz",29);
     cout << key << endl;
 
-    //Result first char should be 4, rest should match with online Hasher -- RESULT PASSED (9baf34)
+    //Result first char should be 4, rest should match with online Hasher -- RESULT PASSED (9baf34a4)
     key = hash_value("max", 31);
     cout << key << endl;
 
-    //Result first char should be 0, rest should match with online Hasher -- RESULT PASSED (d93473)
+    //Result first char should be 0, rest should match with online Hasher -- RESULT PASSED (d93473b8)
     key = hash_value("ibrahimis", 32);
     cout << key << endl;
 
