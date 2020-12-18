@@ -1,9 +1,17 @@
 #include <iostream>
 #include"AVLTree.h"
+#include"Hashing.h"
 using namespace std;
 
 int main()
 {
+    string key = hash_value("abcdefgh", 30);
+    cout << key << endl;
+
+    key = hash_value("abcdefgh",30);
+    cout << key << endl;
+
+
     //Testing AVL
     AVL<int, int> obj;
     obj.insert(1, 30);
