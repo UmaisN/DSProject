@@ -146,6 +146,7 @@
     <ClInclude Include="AVLTree.h" />
     <ClInclude Include="Hashing.h" />
     <ClInclude Include="InfInt.h" />
+    <ClInclude Include="LinkedList.h" />
     <ClInclude Include="sha256.h" />
   </ItemGroup>
   <ItemGroup>
