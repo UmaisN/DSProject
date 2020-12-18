@@ -206,14 +206,14 @@ public:
 	    cout << endl; 
                                                     */
 
-    template<class T,class S>
-    void deleteNode(T key,S data) { //Deletes data from tree
-        root = deleteNode(root, key,data);
+    template<class T>
+    void deleteNode(T key) { //Deletes data from tree
+        root = deleteNode(root, key);
     }
 
     //Delete Node Extension
     template<class T,class S>
-    Node<T,S>* deleteNode(Node<T,S>* root, T key,S data)
+    Node<T,S>* deleteNode(Node<T,S>* root, T key)
     {
         // STEP 1: PERFORM STANDARD BST DELETE  
         if (root == NULL)
@@ -223,13 +223,13 @@ public:
         // than the root's key, then it lies 
         // in left subtree  
         if (key < root->key)
-            root->left = deleteNode(root->left, key, data);
+            root->left = deleteNode(root->left, key);
 
         // If the key to be deleted is greater  
         // than the root's key, then it lies  
         // in right subtree  
         else if (key > root->key)
-            root->right = deleteNode(root->right, key, data);
+            root->right = deleteNode(root->right, key);
 
         // if key is same as root's key, then  
         // This is the node to be deleted  
@@ -263,11 +263,10 @@ public:
                 // Copy the inorder successor's  
                 // data to this node  
                 root->key = temp->key;
-                root->data = temp->data;
 
                 // Delete the inorder successor  
                 root->right = deleteNode(root->right,
-                    temp->key,temp->data);
+                    temp->key);
             }
         }
         // If the tree had only one node 

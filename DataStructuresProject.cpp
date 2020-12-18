@@ -10,7 +10,8 @@ int main()
     obj.insert(3, 50);
     obj.insert(2, 70);
     obj.display();
-
+    obj.deleteNode(3);
+    obj.display();
     //Menu
     int choice = 0;
     while (choice != 10) {
