@@ -5,10 +5,22 @@ using namespace std;
 
 int main()
 {
+    //Hash function testing
+
+    //Result first char should be 2, rest should match with online Hasher -- RESULT PASSED
     string key = hash_value("abcdefgh", 30);
     cout << key << endl;
 
-    key = hash_value("abcdefgh",30);
+    //Result first char should be 0 (NULL), rest should match with online Hasher -- RESULT PASSED (3608bc)
+    key = hash_value("xyz",29);
+    cout << key << endl;
+
+    //Result first char should be 4, rest should match with online Hasher -- RESULT PASSED (9baf34)
+    key = hash_value("max", 31);
+    cout << key << endl;
+
+    //Result first char should be 0, rest should match with online Hasher -- RESULT PASSED (d93473)
+    key = hash_value("ibrahimis", 32);
     cout << key << endl;
 
 
