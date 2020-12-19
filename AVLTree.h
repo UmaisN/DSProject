@@ -3,11 +3,34 @@
 #include <iostream>
 using namespace std;
 
+//Function to return ascii of a string
+int string_ascii(string str)
+{
+    int sum = 0; //variable to hold sum of ascii's
+
+    int length = str.length();//getting length of the string
+
+    int mul = 1;//multiplicand
+
+    //Loop runs until string ends
+    for (int c = 0; c < length; ++c)
+    {
+        int tmp = str[c] * mul;//multiplying ascii with the characters position
+        sum += tmp;
+
+        mul++;//incrementing multiplicand
+    }
+
+    return sum; //sum of ascii returned
+}
+
+
 template<class T, class S>
 class Node {
 public:
     S data;
     T key;
+    S original_key;
     int height;
     Node* left;
     Node* right;
@@ -18,20 +41,21 @@ public:
         right = NULL;
         height = 0;
     }
-    Node(T value, S dat) {
+    Node(S value, S dat) {
         data = dat;
-        key = value;
+        original_key = value;
+        key = string_ascii(value); //storing ascii of original_key in key
         left = NULL;
         right = NULL;
         height = 0;
     }
 };
 
-template<class T,class S>
+template<class T, class S>
 class AVL
 {
 public:
-    Node<T,S>* root;
+    Node<T, S>* root;
     AVL() {
         root = NULL;
     }
@@ -44,8 +68,8 @@ public:
         }
     }
 
-    template<class T,class S>
-    int getHeight(Node<T,S>* node) { //Returns height of node
+    //template<class T,class S>
+    int getHeight(Node<T, S>* node) { //Returns height of node
         if (node == NULL) {
             return -1;
         }
@@ -54,8 +78,8 @@ public:
         }
     }
 
-    template<class T,class S>
-    int getBalanceFactor(Node<T,S>* node) { //getting bf
+    // template<class T,class S>
+    int getBalanceFactor(Node<T, S>* node) { //getting bf
         return getHeight(node->left) - getHeight(node->right);
     }
 
@@ -64,9 +88,9 @@ public:
         display(root);
         cout << endl;
     }
-    
-    template<class T,class S>
-    void display(Node<T,S>* start) { //Displays Function Extension
+
+    //template<class T,class S>
+    void display(Node<T, S>* start) { //Displays Function Extension
         if (start == NULL) {
             return;
         }
@@ -74,26 +98,27 @@ public:
             display(start->left);
             cout << "(";
             cout << start->key << ",";
+            cout << start->original_key << ",";
             cout << start->data << "),";
             display(start->right);
         }
     }
 
-    template<class T,class S>
-    Node<T,S>* rightRotate(Node<T,S>* node) { //Right Rotator, remove comments dashes to check if it is working
+    //template<class T,class S>
+    Node<T, S>* rightRotate(Node<T, S>* node) { //Right Rotator, remove comments dashes to check if it is working
         //cout << "Right Rotating node " << node->key << endl;
-        Node<T,S>* n2 = node->left;
+        Node<T, S>* n2 = node->left;
         node->left = n2->right;
         n2->right = node;
         n2->height = max(getHeight(n2->left), getHeight(n2->right)) + 1;
-        node->height = max(getHeight(node->left), getHeight(node->right))+1;
+        node->height = max(getHeight(node->left), getHeight(node->right)) + 1;
         //cout << "Returning node " << n2->key << " as Parent" << endl;
         return n2;
     }
-    template<class T,class S>
-    Node<T,S>* leftRotate(Node<T,S>* node) { //Left Rotator, remove comments dashes to check if it is working
+    //template<class T,class S>
+    Node<T, S>* leftRotate(Node<T, S>* node) { //Left Rotator, remove comments dashes to check if it is working
         //cout << "Left Rotating node " << node->key << endl;
-        Node<T,S>* n2 = node->right;
+        Node<T, S>* n2 = node->right;
         node->right = n2->left;
         n2->left = node;
         n2->height = max(getHeight(n2->left), getHeight(n2->right)) + 1;
@@ -104,25 +129,28 @@ public:
 
     /* How should you be inserting in main?
         AVL<int> obj;
-	    obj.root = obj.insert(obj.root, 1);
-	    obj.root = obj.insert(obj.root, 2);
-	    obj.root = obj.insert(obj.root, 3);
-	    obj.preorder(obj.root);
-	    cout << endl;
+        obj.root = obj.insert(obj.root, 1);
+        obj.root = obj.insert(obj.root, 2);
+        obj.root = obj.insert(obj.root, 3);
+        obj.preorder(obj.root);
+        cout << endl;
                                                 */
 
-    template<class T,class S>
-    void insert(T key,S data) 
+                                                // template<class T,class S>
+    void insert(S key, S data)
     { //Inserts data into tree
-        root = insert(root, key,data);
+        root = insert(root, key, data);
     }
-    template<class T,class S>
-    Node<T,S>* insert(Node<T,S>* start, T key,S data) { //Insert function extension
+    //  template<class T,class S>
+    Node<T, S>* insert(Node<T, S>* start, S key1, S data) { //Insert function extension
+
+        T key = string_ascii(key1);
+
         if (start == NULL) {
-            start = new Node<T,S>(key,data);
+            start = new Node<T, S>(key1, data);
         }
         else if (key < start->key) {
-            start->left = insert(start->left, key,data);
+            start->left = insert(start->left, key1, data);
             int bf = getBalanceFactor(start);
             if (bf == 2 || bf == -2) {
                 if (start->left->key > key) {
@@ -131,7 +159,7 @@ public:
             }
         }
         else if (key > start->key) {
-            start->right = insert(start->right, key,data);
+            start->right = insert(start->right, key1, data);
             int bf = getBalanceFactor(start);
             if (bf == 2 || bf == -2) {
                 if (start->right->key < key) {
@@ -139,7 +167,7 @@ public:
                 }
             }
         }
-        start->height = max(getHeight(start->left), getHeight(start->right))+1;
+        start->height = max(getHeight(start->left), getHeight(start->right)) + 1;
         return start;
     }
 
@@ -148,8 +176,8 @@ public:
     /*
 * Inorder Traversal of AVL Tree
 */
-    template<class T,class S>
-    void inorder(Node<T,S>* tree)
+// template<class T,class S>
+    void inorder(Node<T, S>* tree)
     {
         if (tree == NULL)
             return;
@@ -161,8 +189,8 @@ public:
     /*
     * Preorder Traversal of AVL Tree
     */
-    template<class T,class S>
-    void preorder(Node<T,S>* tree)
+    //template<class T,class S>
+    void preorder(Node<T, S>* tree)
     {
         if (tree == NULL)
             return;
@@ -174,8 +202,8 @@ public:
     /*
     * Postorder Traversal of AVL Tree
     */
-    template<class T,class S>
-    void postorder(Node<T,S>* tree)
+    // template<class T,class S>
+    void postorder(Node<T, S>* tree)
     {
         if (tree == NULL)
             return;
@@ -186,10 +214,10 @@ public:
     }
     //------------------------------------
     //MinVal Node
-    template<class T,class S>
-    Node<T,S>* minValueNode(Node<T,S>* node)
+   // template<class T,class S>
+    Node<T, S>* minValueNode(Node<T, S>* node)
     {
-        Node<T,S>* current = node;
+        Node<T, S>* current = node;
 
         /* loop down to find the leftmost leaf */
         while (current->left != NULL)
@@ -199,22 +227,25 @@ public:
     }
 
     /*How should you be deleting in main?
-       	obj.root = obj.deleteNode(obj.root, 11);
-	    obj.root = obj.deleteNode(obj.root, 10);
-	    obj.root = obj.deleteNode(obj.root, 9);
-	    obj.root = obj.deleteNode(obj.root, 6);
-	    obj.preorder(obj.root);
-	    cout << endl; 
+        obj.root = obj.deleteNode(obj.root, 11);
+        obj.root = obj.deleteNode(obj.root, 10);
+        obj.root = obj.deleteNode(obj.root, 9);
+        obj.root = obj.deleteNode(obj.root, 6);
+        obj.preorder(obj.root);
+        cout << endl;
                                                     */
 
-    template<class T>
-    void deleteNode(T key) { //Deletes data from tree
-        root = deleteNode(root, key);
+                                                    // template<class T>
+    void deleteNode(S key) { //Deletes data from tree
+
+        T key1 = string_ascii(key);
+
+        root = deleteNode(root, key1);
     }
 
     //Delete Node Extension..
-    template<class T,class S>
-    Node<T,S>* deleteNode(Node<T,S>* root, T key)
+    //template<class T,class S>
+    Node<T, S>* deleteNode(Node<T, S>* root, T key)
     {
         // STEP 1: PERFORM STANDARD BST DELETE  
         if (root == NULL)
@@ -240,7 +271,7 @@ public:
             if ((root->left == NULL) ||
                 (root->right == NULL))
             {
-                Node<T,S>* temp = root->left ?
+                Node<T, S>* temp = root->left ?
                     root->left :
                     root->right;
 
@@ -259,7 +290,7 @@ public:
             {
                 // node with two children: Get the inorder  
                 // successor (smallest in the right subtree)  
-                Node<T,S>* temp = minValueNode(root->right);
+                Node<T, S>* temp = minValueNode(root->right);
 
                 // Copy the inorder successor's  
                 // data to this node  
@@ -317,9 +348,9 @@ public:
     }
 
     //Search Function
-    template <class T,class S>
-    Node<T,S>* searchNode(T key) {
-        Node<T,S>* trav = root;
+    //template <class T,class S>
+    Node<T, S>* searchNode(T key) {
+        Node<T, S>* trav = root;
         while (trav != nullptr)
         {
             if (trav->key == key)
