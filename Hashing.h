@@ -169,3 +169,81 @@ string hash_value(string key, int num_bits)  //Can return a hash value of 1-256 
 	return hashed_value;
 }
 
+string int_to_hex(InfInt id)
+{
+	string hex = "";
+	InfInt temp;
+
+	while (id != 0)
+	{
+		temp = id % 16;
+		id = id / 16;
+		
+		if (temp == 0)
+		{
+			hex = '0' + hex;
+		}
+		else if (temp == 1)
+		{
+			hex = '1' + hex;
+		}
+		else if (temp == 2)
+		{
+			hex = '2' + hex;
+		}
+		else if (temp == 3)
+		{
+			hex = '3' + hex;
+		}
+		else if (temp == 4)
+		{
+			hex = '4' + hex;
+		}
+		else if (temp == 5)
+		{
+			hex = '5' + hex;
+		}
+		else if (temp == 6)
+		{
+			hex = '6' + hex;
+		}
+		else if (temp == 7)
+		{
+			hex = '7' + hex;
+		}
+		else if (temp == 8)
+		{
+			hex = '8' + hex;
+		}
+		else if (temp == 9)
+		{
+			hex = '9' + hex;
+		}
+		else if (temp == 10)
+		{
+			hex = 'a' + hex;
+		}
+		else if (temp == 11)
+		{
+			hex = 'b' + hex;
+		}
+		else if (temp == 12)
+		{
+			hex = 'c' + hex;
+		}
+		else if (temp == 13)
+		{
+			hex = 'd' + hex;
+		}
+		else if (temp == 14)
+		{
+			hex = 'e' + hex;
+		}
+		else if (temp == 15)
+		{
+			hex = 'f' + hex;
+		}
+
+	}
+	return hex;
+}

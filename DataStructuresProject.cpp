@@ -5,6 +5,10 @@ using namespace std;
 
 int main()
 {
+    //Int to Hex testing
+    InfInt x = 124134;
+    cout << int_to_hex(x)<<endl;
+
     //Hash function testing
 
     //Result first char should be 2, rest should match with online Hasher -- RESULT PASSED
