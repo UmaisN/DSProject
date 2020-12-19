@@ -37,7 +37,7 @@ int main()
     while (choice != 10) {
         cout << "---------Menu-----------" << endl;
         cout << "1) Specify the number of machines " << endl;
-        cout << "2) Specify the size of identified space" << endl;
+        cout << "2) Specify the size of identifier space" << endl;
         cout << "3) Manually assign Id to each machine" << endl;
         cout << "4) Insert data in the form of key" << endl;
         cout << "5) Remove data by specifying the key from any machine" << endl;
