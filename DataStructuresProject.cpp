@@ -5,6 +5,8 @@ using namespace std;
 
 int main()
 {
+    //Testing AVL Again with strings
+
     //Int to Hex testing
     InfInt x = 124134;
     cout << int_to_hex(x)<<endl;
@@ -27,15 +29,6 @@ int main()
     key = hash_value("ibrahimis", 32);
     cout << key << endl;
 
-
-    //Testing AVL
-    AVL<int, int> obj;
-    obj.insert(1, 30);
-    obj.insert(3, 50);
-    obj.insert(2, 70);
-    obj.display();
-    obj.deleteNode(3);
-    obj.display();
     //Menu
     int choice = 0;
     while (choice != 10) {
