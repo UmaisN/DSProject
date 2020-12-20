@@ -349,12 +349,18 @@ public:
 
     //Search Function
     //template <class T,class S>
-    Node<T, S>* searchNode(T key) {
+    Node<T, S>* searchNode(S key1) {
+
+        T key = string_ascii(key1);//getting ascii value of searched key
+
         Node<T, S>* trav = root;
         while (trav != nullptr)
         {
             if (trav->key == key)
             {
+
+                //cout << trav->key << " " << trav->original_key << " " << trav->data << endl;
+                //This was witten just to check functionality of search function
                 return trav;
             }
             else if (key < trav->key)
