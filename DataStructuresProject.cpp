@@ -6,8 +6,8 @@ using namespace std;
 
 int main()
 {
-    cout << string_ascii("i192002") << endl;
-    cout << string_ascii("i192020") << endl;
+    //cout << string_ascii("i192002") << endl;
+    //cout << string_ascii("i192020") << endl;
 
     //Int to Hex testing
     //InfInt x = 124134;
@@ -16,9 +16,17 @@ int main()
     ////Hash function testing
 
     ////Result first char should be 2, rest should match with online Hasher -- RESULT PASSED
-    //string key = hash_value("abcdefgh", 30);
+    string key = "a";
     //cout << key << endl;
-
+    cout << hash_value("ibrahi", 4) << endl;
+    cout << hash_value("sfsfab", 4) << endl;
+    cout << hash_value("facvvc", 4) << endl;
+    cout << hash_value("skfhba", 4) << endl;
+    cout << hash_value("vbuybihe", 4) << endl;
+    cout << hash_value("afkhbvf", 4) << endl;
+    cout << hash_value("giucbe", 4) << endl;
+    cout << hash_value("hnmdvhj", 4) << endl;
+    
     ////Result first char should be 0 (NULL), rest should match with online Hasher -- RESULT PASSED (3608bca)
     //key = hash_value("xyz",29);
     //cout << key << endl;
