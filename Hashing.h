@@ -4,6 +4,8 @@
 #include<cmath>
 using namespace std;
 
+
+
 int hex_to_int(char c)
 {
 	int val;
@@ -167,6 +169,19 @@ string hash_value(string key, int num_bits)  //Can return a hash value of 1-256 
 	}
 
 	return hashed_value;
+}
+
+//Function to raise an InfInt to a given power
+InfInt InfIntpow(InfInt base_num,InfInt exponent) 
+{
+	InfInt result = 1;//storing result
+
+	for (InfInt c = 0; c < exponent; ++c) 
+	{
+		result = result * base_num;//adding in result
+	}
+
+	return result;
 }
 
 string int_to_hex(InfInt id)
