@@ -6,6 +6,9 @@ using namespace std;
 
 int main()
 {
+    /////Testing Convert Hex Function///////
+
+    cout << convert_hex("1E0F4")<<endl<<endl<<endl;
     //cout << string_ascii("i192002") << endl;
     //cout << string_ascii("i192020") << endl;
 

@@ -6,9 +6,11 @@ using namespace std;
 
 
 
+
+
 int hex_to_int(char c)
 {
-	int val;
+	int val=0;
 	if (c == '0')
 	{
 		val = 0;
@@ -49,27 +51,27 @@ int hex_to_int(char c)
 	{
 		val = 9;
 	}
-	else if (c == 'a')
+	else if ((c == 'a')or (c == 'A'))
 	{
 		val = 10;
 	}
-	else if (c == 'b')
+	else if ((c == 'b') or (c == 'B'))
 	{
 		val = 11;
 	}
-	else if (c == 'c')
+	else if ((c == 'c') or (c == 'C'))
 	{
 		val = 12;
 	}
-	else if (c == 'd')
+	else if ((c == 'd') or (c == 'D'))
 	{
 		val = 13;
 	}
-	else if (c == 'e')
+	else if ((c == 'e') or (c == 'E'))
 	{
 		val = 14;
 	}
-	else if (c == 'f')
+	else if ((c == 'f') or (c == 'F'))
 	{
 		val = 15;
 	}
@@ -261,4 +263,23 @@ string int_to_hex(InfInt id)
 
 	}
 	return hex;
+}
+
+//This function converts a hexadecimal string to InfInt
+InfInt convert_hex(string hex)
+{
+	InfInt val = 0;
+	InfInt exponent = 0;
+	InfInt exponentvalue = 0;
+
+	int stringlength = hex.length();
+	stringlength--;
+	for (int i = stringlength; i >= 0; i--)
+	{
+		exponentvalue = InfIntpow(16, exponent);
+		val = val + (exponentvalue * hex_to_int(hex[i]));
+		exponent++;
+	}
+
+	return val;
 }
