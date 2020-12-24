@@ -1,5 +1,7 @@
 #pragma once
 #include "LinkedList.h"
+#include "InfInt.h"
+#include "Hashing.h"
 #include <iostream>
 using namespace std;
 
@@ -32,8 +34,15 @@ public:
     T key;
     S original_key;
     int height;
+    InfInt hashed_key;//infint variable to store hashed key of node
+
+    int line_no;  //variable to store the line number at which the data is stored
+
     Node* left;
     Node* right;
+
+    Node* next;  //pointer to point to linked list of duplicates
+
     Node() {
         data = NULL;
         key = -1;
@@ -41,24 +50,92 @@ public:
         right = NULL;
         height = 0;
     }
-    Node(S value, S dat) {
+    Node(S value, S dat, InfInt hash_k) {
         data = dat;
         original_key = value;
         key = string_ascii(value); //storing ascii of original_key in key
+        //hashed_key = hash_value(value,)
         left = NULL;
         right = NULL;
         height = 0;
+        hashed_key = hash_k;
     }
+
+    //Function to link nodes with a similar key
+    void add_duplicate(S key1, S data, InfInt hash_k)
+    {
+        T ascii_sum = string_ascii(key1);//storing ascii of new entry
+
+        //duplicate only added if keys of both nodes match
+        if (this->key == ascii_sum)
+        {
+            Node<T, S>* nodeptr = new Node(key1, data, hash_k);//new node created 
+
+            Node<T, S>* ptr = this;//ptr for loop
+            Node<T, S>* ptr2 = NULL;
+
+            //This loop iterates over linked list of duplicates until end is reached
+            while (ptr != NULL)
+            {
+                ptr2 = ptr;
+                ptr = ptr->next;
+            }
+
+            //New node is inserted at the end of the linked list
+
+            ptr2->next = nodeptr;//duplicate node linked to this node
+        }
+    }
+
+    string display()
+    {
+        string str;  //string to store info of node, if duplicates exists then their info will also be appended
+
+        str.push_back('(');
+        str.append(this->original_key);//eppending info og current data
+        str.push_back(',');
+        str.append(this->data);
+        str.push_back(')');
+
+        //Now iterating over linked list of duplicates(nodes with similar keys) if they exist
+
+        Node<T, S>* nodeptr = next;//initializing nodeptr with next pointer
+
+        while (nodeptr != NULL)
+        {
+            str.append(" , ");
+            str.push_back('(');
+            str.append(nodeptr->original_key);
+            str.push_back(',');
+            str.append(nodeptr->data);
+            str.push_back(')');
+
+            nodeptr = nodeptr->next;
+        }
+
+        return str;
+    }
+
 };
 
 template<class T, class S>
 class AVL
 {
+private:
+    int ID_space;
+    string file_name;//every avl has its own unique file to store data in
 public:
     Node<T, S>* root;
     AVL() {
         root = NULL;
+        ID_space = -1;
+        file_name = "";
     }
+    void set_IDspace(int id_sp)
+    {
+        ID_space = id_sp;
+    }
+
     int max(int a, int b) { //Calculates length of left and right branches
         if (a > b) {
             return a;
@@ -146,8 +223,10 @@ public:
 
         T key = string_ascii(key1);
 
+        InfInt hash_k = hash_value(key1, ID_space);//getting hash of key
+
         if (start == NULL) {
-            start = new Node<T, S>(key1, data);
+            start = new Node<T, S>(key1, data, hash_k);
         }
         else if (key < start->key) {
             start->left = insert(start->left, key1, data);
@@ -167,6 +246,12 @@ public:
                 }
             }
         }
+        else
+        {
+            //start.duplictae
+            start->add_duplicate(key1, data, hash_k);
+        }
+
         start->height = max(getHeight(start->left), getHeight(start->right)) + 1;
         return start;
     }

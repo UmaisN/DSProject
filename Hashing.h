@@ -1,3 +1,4 @@
+#pragma once
 #include"sha256.h"
 #include"InfInt.h"
 #include<iostream>

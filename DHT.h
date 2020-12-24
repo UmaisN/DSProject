@@ -1,6 +1,7 @@
 #pragma once
 #include"AVLTree.h"
 #include"Hashing.h"
+#include"InfInt.h"
 #include<iostream>
 using namespace std;
 
@@ -42,13 +43,16 @@ class DHT
 private:
 	//Since we will have a circular singly linked list of Machines, we are only required to have a head.
 	
-	Machine_node<T, S> head;//head of linked list declared here.
+	Machine_node<T, S>* head;//head of linked list declared here.
+
+	InfInt ID_space;        //variable to hold number of bits of Identifier space
 
 public:
 
 	DHT() 
 	{
 		head = NULL;
+		cout << "hello" << endl;
 	}
 
 
@@ -81,17 +85,24 @@ public:
 
 //Defining Finger Table class which is a doubly linked list of FT_nodes
 template<class T, class S>
-class F_Table 
+class F_Table
 {
 private:
 	FT_node<T, S>* head; //head of linked list
 	FT_node<T, S>* tail; //tail of linked list
 public:
 
-	F_Table() 
+	F_Table()
 	{
 		head = NULL;
 		tail = NULL;
+	}
+
+	//Following function takes a Machine linked list as a parameter and
+	//updates current Machines Finger Table.
+	void Update_F_Table(DHT<T,S> machine_list)
+	{
+
 	}
 
 };
