@@ -144,6 +144,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="AVLTree.h" />
+    <ClInclude Include="DHT.h" />
     <ClInclude Include="Hashing.h" />
     <ClInclude Include="InfInt.h" />
     <ClInclude Include="LinkedList.h" />
