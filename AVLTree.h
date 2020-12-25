@@ -2,6 +2,7 @@
 #include "LinkedList.h"
 #include "InfInt.h"
 #include "Hashing.h"
+#include <fstream>
 #include <iostream>
 using namespace std;
 
@@ -50,7 +51,7 @@ public:
         right = NULL;
         height = 0;
     }
-    Node(S value, S dat, InfInt hash_k) {
+    Node(S value, S dat, InfInt hash_k, string filename) {
         data = dat;
         original_key = value;
         key = string_ascii(value); //storing ascii of original_key in key
@@ -59,17 +60,105 @@ public:
         right = NULL;
         height = 0;
         hashed_key = hash_k;
+
+        this->write_in_file(filename);
+    }
+
+    //This function takes filename as parameter and stores the nodes data in the given file
+    void write_in_file(string filename)
+    {
+        //------FIRST OPENING FILE TO WRITE DATA OF NODE--------------------//
+
+        ofstream file(filename, ios::out | ios::app); //creating ostream object
+
+        file << this->original_key << " " << this->data << endl;//writing current nodes info in file
+
+        file.close();//closing file after writing
+
+        //------------------------------------------------------------------//
+
+        //------NOW OPENING FILE TO READ & IDENTIFY LINE NUM OF DATA--------//
+        ifstream file1(filename, ios::in);//opening file to read
+
+        //String to hold all data of inserted node
+        string curr_data = this->original_key;
+        curr_data.push_back(' ');
+        curr_data.append(this->data);
+
+        string tmp_str;
+
+        int line_count = 0;//variable to hold count of line
+
+        //loop to iterate over file
+        while (!file1.eof())
+        {
+            getline(file1, tmp_str);//reading line from the file
+
+            if (tmp_str == curr_data)
+            {
+                this->line_no = line_count;//storing line count in current nodes line_no
+                break;
+            }
+            line_count++;//incrementing line count 
+        }
+
+        file1.close();
+        //------------------------------------------------------------------//
+
+
+    }
+
+    //Function to delete node's info from file
+    void delete_from_file(string filename)
+    {
+        //opening file to check where current nodes info is written and then remove it
+        fstream file(filename, ios::out | ios::app | ios::in | ios::beg);
+
+        int count = 0;
+
+        //String to hold all data of inserted node
+        string curr_data = this->original_key;
+        curr_data.push_back(' ');
+        curr_data.append(this->data);
+
+        string tmp;
+
+        int pos;
+
+        while (!file.eof())
+        {
+            getline(file, tmp);//reading line from file and storing in tmp
+
+            if (tmp == curr_data)
+            {
+                //file << endl;//writing an empty string over files info
+
+                pos = file.tellg();//getting position of cursor
+
+                //pos -= curr_data.length();
+
+                break;
+            }
+            count++;
+        }
+
+        //file.seekp(pos,ios::beg);
+
+        //INSERT CORRECT IMPLEMENTATION HERE
+        //file << "hellooo";
+
+        file.close();
     }
 
     //Function to link nodes with a similar key
-    void add_duplicate(S key1, S data, InfInt hash_k)
+    void add_duplicate(S key1, S data, InfInt hash_k, string filename)
     {
         T ascii_sum = string_ascii(key1);//storing ascii of new entry
 
         //duplicate only added if keys of both nodes match
         if (this->key == ascii_sum)
         {
-            Node<T, S>* nodeptr = new Node(key1, data, hash_k);//new node created 
+            Node<T, S>* nodeptr = new Node(key1, data, hash_k, filename);//new node created 
 
             Node<T, S>* ptr = this;//ptr for loop
             Node<T, S>* ptr2 = NULL;
@@ -125,15 +214,20 @@ private:
     int ID_space;
     string file_name;//every avl has its own unique file to store data in
 public:
+
     Node<T, S>* root;
+
     AVL() {
         root = NULL;
         ID_space = -1;
         file_name = "";
     }
-    void set_IDspace(int id_sp)
+
+    //Setter for AVL attributes
+    void set_AVL_specs(string filename, int id_sp)
     {
         ID_space = id_sp;
+        file_name = filename;
     }
 
     int max(int a, int b) { //Calculates length of left and right branches
@@ -226,7 +320,7 @@ public:
         InfInt hash_k = hash_value(key1, ID_space);//getting hash of key
 
         if (start == NULL) {
-            start = new Node<T, S>(key1, data, hash_k);
+            start = new Node<T, S>(key1, data, hash_k, file_name);
         }
         else if (key < start->key) {
             start->left = insert(start->left, key1, data);
@@ -249,7 +343,7 @@ public:
         else
         {
             //start.duplictae
-            start->add_duplicate(key1, data, hash_k);
+            start->add_duplicate(key1, data, hash_k, file_name);
         }
 
         start->height = max(getHeight(start->left), getHeight(start->right)) + 1;
@@ -322,6 +416,11 @@ public:
 
                                                     // template<class T>
     void deleteNode(S key) { //Deletes data from tree
+
+        Node<T, S>* nodeptr = searchNode(key);
+
+        if (nodeptr != NULL)
+            nodeptr->delete_from_file(file_name);
 
         T key1 = string_ascii(key);
 

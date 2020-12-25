@@ -55,7 +55,7 @@ int main()
 
     //Testing AVL
     AVL<int, string> obj;
-    obj.set_IDspace(4);     //ALWAYS SET ID SPACE OF AVL BEFORE USING IT
+    obj.set_AVL_specs("exfile.txt", 4);     //ALWAYS SET ID SPACE OF AVL BEFORE USING IT
 
     obj.insert("Ibrahim", "Aamer");
     obj.insert("Noveen", "Fatima");
@@ -65,17 +65,24 @@ int main()
     obj.insert("Momin1", "Tariq");
 
     obj.display();
-    // obj.deleteNode("Omais");
+    obj.deleteNode("Omais");
     obj.display();
     Node<int, string>* nd;
     nd = obj.searchNode("Ibrahim");
     cout << nd->hashed_key << endl;
+    cout << nd->original_key << " " << nd->line_no << endl;
     nd = obj.searchNode("Noveen");
     cout << nd->hashed_key << endl;
-    nd = obj.searchNode("Omais");
-    cout << nd->hashed_key << endl;
+    cout << nd->original_key << " " << nd->line_no << endl;
+    //nd = obj.searchNode("Omais");
+    //cout<<nd->hashed_key<<endl;
+    //cout << nd->original_key << " " << nd->line_no << endl;
     nd = obj.searchNode("Momin");
     cout << nd->hashed_key << endl;
+    cout << nd->original_key << " " << nd->line_no << endl;
+    nd = obj.searchNode("Momin1");
+    cout << nd->hashed_key << endl;
+    cout << nd->original_key << " " << nd->line_no << endl;
     // cout<<"search"<<nd->next->original_key << endl;
 
      //InfInt x = 2;
