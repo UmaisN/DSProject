@@ -34,7 +34,7 @@ public:
 			//Each routing table entry [i] contains the shortcut / pointer to the distant node.
 
 	Machine_node<T, S>* next;//pointer to next machine for circular singly linked list in DHT 
-
+	Machine_node<T, S>* prev;
 	//-----------------------------defining functions-------------------------------//
 
 	Machine_node()
@@ -45,6 +45,7 @@ public:
 		ID_space = -1;
 
 		next = NULL;
+		prev = NULL;
 	}
 
 	//Paramterized constructor which takes machine's id as string, its Hahsed ID and the Identifier space bits
@@ -90,6 +91,7 @@ public:
 		Data_Tree.set_AVL_specs(filestr, ID_space);//setting AVL tree specs(i.e. filename and ID space)
 
 		next = NULL;//initializing next pointer to NULL
+		prev = NULL;
 	}
 
 	//Function to insert data in machine
@@ -120,6 +122,7 @@ private:
 	//Since we will have a circular singly linked list of Machines, we are only required to have a head.
 
 	Machine_node<T, S>* head;//head of linked list declared here.
+	Machine_node<T, S>* tail;
 
 	int ID_space;        //variable to hold number of bits of Identifier space
 
@@ -152,7 +155,7 @@ private:
 		}
 	}
 	//----------------------------------------------------------------------------------//
-public:
+
 	//Function to check repeatition of hash ID 
 	//If it repeats it returns true else false
 	bool check_ID(InfInt hash_ID)
@@ -179,23 +182,68 @@ public:
 		return false;//if no match found false returned.
 	}
 
+	//Function to check repeatition of hash ID 
+	//If it repeats it returns true else false
+	Machine_node<T, S>* search_ID(InfInt hash_ID)
+	{
+		if (this->head != NULL)
+		{
+			Machine_node<T, S>* nodeptr = head;//pointer to iterate over linked list of machines
 
+			bool loop_flag = false;//Flag variable to make sure loop doesnt iterarte more than once over the list
+						   //because its a circular list
+
+			while (nodeptr != head || loop_flag == false)
+			{
+				if (nodeptr->ID == hash_ID)
+				{
+					return nodeptr;//ptr returned on finding a match
+				}
+
+				nodeptr = nodeptr->next;
+				loop_flag = true;
+			}
+		}
+
+		return NULL;//if no match found NULL returned.
+	}
+
+public:
 
 	DHT()
 	{
 		head = NULL;
+		tail = NULL;
 		cout << "hello" << endl;
 	}
 
 	DHT(int id_space)
 	{
 		head = NULL;
+		tail = NULL;
 		this->ID_space = id_space;
+	}
+
+	//This function takes machine node pointer and key value pair,
+	//Insertion can be done from any machine.
+	//(Finger table used to navigate to correct machine).
+	void machine_insert(Machine_node<T, S>* mach_node, string str_key, string str_data)
+	{
+
+
+	}
+
+	//This function is public and takes machine ID string to insert data in system from any machine.
+	//Takes key, value pairs as a parameter.
+	void insert_from_machine(string machine_id, string str_key, string str_data)
+	{
+
 	}
 
 	//Function to insert a new machine into DHT, takes machine ID string as a parameter
 	void insert_machine(string machine_id)
 	{
+
 
 		InfInt hash_id = hash_value(machine_id, this->ID_space);
 
@@ -206,6 +254,9 @@ public:
 		{
 			head = new_mach;
 			head->next = head;
+			head->prev = head;
+			tail = new_mach;
+
 		}
 		else if (head->next == head) //Handling second entry[When there is only one machine].
 		{
@@ -214,9 +265,13 @@ public:
 			{
 				head->next = new_mach;//head newx to new mach
 				new_mach->next = head;//new mach next to head because list is circular
+				new_mach->prev = head;
+				tail = new_mach;
 			}
 			else //if new mach ID < head ID
 			{
+				tail = head;
+				head->prev = new_mach;
 				head->next = new_mach;
 				new_mach->next = head;
 				head = new_mach;
@@ -235,7 +290,10 @@ public:
 					//Inserting new_mach between nodeptr & nodeptr2 if its ID is in b/w both.
 
 					new_mach->next = nodeptr2;
+					nodeptr2->prev = new_mach;
 					nodeptr->next = new_mach;
+					new_mach->prev = nodeptr;
+
 					break;
 				}
 				else if (new_mach->ID > nodeptr2->ID && nodeptr2->next == head)
@@ -244,13 +302,18 @@ public:
 
 					new_mach->next = head;
 					nodeptr2->next = new_mach;
+					new_mach->prev = nodeptr2;
+					tail = new_mach;
 
+					break;
 				}
 
 				nodeptr = nodeptr->next;//Updating nodeptr
 				nodeptr2 = nodeptr2->next;
 			}
 		}
+
+		//this->update_Data_trees(new_mach,new_mach->next);
 
 		this->Update_Finger_Tables();
 	}

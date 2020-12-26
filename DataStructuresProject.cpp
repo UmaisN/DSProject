@@ -131,8 +131,7 @@ int main()
 
     obj.display_machines();
 
-    InfInt l = hash_value("M11", 8);
-    cout << obj.check_ID(l);
+
 
     /*	//----------INPUT VALIDATION IF USER ENTERS AN ID WHICH ALREADY EXIST-----------//
 
