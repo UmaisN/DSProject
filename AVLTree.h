@@ -156,7 +156,8 @@ public:
         T ascii_sum = string_ascii(key1);//storing ascii of new entry
 
         //duplicate only added if keys of both nodes match
-        if (this->key == ascii_sum)
+        //and both nodes have different sets of data
+        if (this->key == ascii_sum && this->data != data)
         {
             Node<T, S>* nodeptr = new Node(key1, data, hash_k, filename);//new node created 
 
@@ -181,6 +182,8 @@ public:
         string str;  //string to store info of node, if duplicates exists then their info will also be appended
 
         str.push_back('(');
+        str.append(to_string(this->line_no));
+        str.push_back(',');
         str.append(this->original_key);//eppending info og current data
         str.push_back(',');
         str.append(this->data);
@@ -190,10 +193,12 @@ public:
 
         Node<T, S>* nodeptr = next;//initializing nodeptr with next pointer
 
-        while (nodeptr != NULL)
+        while (nodeptr != NULL)//loop to display duplicate nodes
         {
             str.append(" , ");
             str.push_back('(');
+            str.append(to_string(nodeptr->line_no));
+            str.push_back(',');
             str.append(nodeptr->original_key);
             str.push_back(',');
             str.append(nodeptr->data);
@@ -267,10 +272,13 @@ public:
         }
         else {
             display(start->left);
-            cout << "(";
-            cout << start->key << ",";
-            cout << start->original_key << ",";
-            cout << start->data << "),";
+            //cout << "(";
+            //cout << start->key << ",";
+            //cout << start->original_key << ",";
+
+            cout << start->display() << " , ";
+
+            //cout << start->data << ",";
             display(start->right);
         }
     }
