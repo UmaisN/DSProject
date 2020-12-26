@@ -7,6 +7,9 @@ using namespace std;
 int main()
 {
 
+
+    //Testing log2 Function
+    cout << log2(31)<<" "<<log2(64)<< " " << log2(7390) << " " << log2(2729) << endl<<endl;
     //DHT<int, string> mach;
 
     /////Testing Convert Hex Function///////
