@@ -140,11 +140,10 @@ int main()
 
     cout << hash_value("ibrahim", 8) << endl;
 
-    obj.insert_from_machine("M18", "ibrahim", "aamer");
+    obj.insert_from_machine("M7", "ibrahim", "aamer");
+    obj.insert_from_machine("M7", "ibrahim", "Musa");
 
-    cout << hash_value("hello", 8) << endl;
-
-    obj.insert_from_machine("M8", "hello", "Musa");
+    obj.display_a_machine("M4", 2);
 
 
     /*	//----------INPUT VALIDATION IF USER ENTERS AN ID WHICH ALREADY EXIST-----------//
