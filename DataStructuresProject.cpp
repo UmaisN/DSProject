@@ -32,10 +32,10 @@ int main()
     cout << endl << endl << "Inserting the key 'Umais' " << endl;
     dht1.insert_from_machine("4", "Umais", "This is Umais's Data");
     cout << endl << endl << "Inserting the key 'Aamer' " << endl;
-    dht1.insert_from_machine("3", "Aamer", "This is Aamer's Data");
+    dht1.insert_from_machine("1", "Aamer", "This is Aamer's Data");
 
     cout << endl << endl << "To also show duplicates, we will insert more data with the key 'Ibrahim' " << endl;
-    dht1.insert_from_machine("2", "Ibrahim", "This is Ibrahim's Data Part 2");
+    dht1.insert_from_machine("3", "Ibrahim", "This is Ibrahim's Data Part 2");
 
     cout << endl << " --------------------------------------------------" << endl;
     cout << "|     DISPLAYING AVL TREES FOR ALL MACHINES       |" << endl;
@@ -46,9 +46,11 @@ int main()
     dht1.display_a_machine("3", 2);
     dht1.display_a_machine("4", 2);
 
-    cout << endl << hash_value("Umais", 4);
+    cout << endl << endl<< "Deleting a Machine" << endl;
+    dht1.delete_machine("1");
+    dht1.display_a_machine("3", 2);
 
-    /*
+    
 
     cout << " --------------------------------------------------" << endl;
     cout << "|                  USER  DRIVEN DHT                 |" << endl;
@@ -145,7 +147,7 @@ int main()
             cin >> data;
             cout << endl << "Input the Machine ID from which we will begin the insertion process: ";
             cin >> machine_id;
-            dht2.remove_from_machine(machine_id, key, data);
+            dht2.remove_from_machine(machine_id, key);
         }
         else if (choice == 3)
         {
@@ -165,11 +167,55 @@ int main()
         }
         else if (choice == 6)
         {
+            int manual_choice_1;
+            cout << "Do you want to manually assign the ID for the machine? Press 1 for YES: ";
+            cin >> manual_choice_1;
 
+            if (manual_choice_1 == 1) //If User is assigning IDs
+            {
+                cout << endl << "Input ID for Machine "<< " : ";
+                cin >> machine_id;
+                //----------INPUT VALIDATION IF USER ENTERS AN ID WHICH ALREADY EXIST-----------//
+
+                InfInt hashed_ID = hash_value(machine_id, identifier_space);
+
+
+                while (dht2.check_ID(hashed_ID)) //Loop runs until a new ID is entered
+                {
+                    cout << endl << "Entered ID already exists !" << endl;
+                    cout << "    Kindly Enter a new ID : ";
+                    cin >> machine_id;
+
+                    hashed_ID = hash_value(machine_id, identifier_space);//deriving hash of new ID
+                }
+
+                //Now that we have a unique hashed_ID, we can create the machine
+                dht2.insert_machine(machine_id);
+
+            }
+            else //If Randomly Assigning ID
+            {
+                machine_id = gen_random(10); //Value 10 can be changed to anything, it does not matter in the long run
+                //----------INPUT VALIDATION IF USER ENTERS AN ID WHICH ALREADY EXIST-----------//
+
+                InfInt hashed_ID = hash_value(machine_id, identifier_space);
+
+
+                while (dht2.check_ID(hashed_ID)) //Loop runs until a new ID is generated
+                {
+                    machine_id = gen_random(10);
+                    hashed_ID = hash_value(machine_id, identifier_space);//deriving hash of new ID
+                }
+
+                //Now that we have a unique hashed_ID, we can create the machine
+                dht2.insert_machine(machine_id);
+            }
         }
         else if (choice == 7)
         {
-
+            cout << endl << "Enter the ID of the machine you want to remove: ";
+            cin >> machine_id;
+            dht2.delete_machine(machine_id);
         }
         else if (choice == 8)
         {
@@ -180,7 +226,7 @@ int main()
             cout << "Invalid option selected." << endl;
         }
     }
-*/
+
 }
 
 
