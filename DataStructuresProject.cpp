@@ -56,10 +56,10 @@ int main()
     //cout << hash_value("Momin", 4) << endl;
 
     //Testing AVL
-    //AVL<int, string> obj;
-    //obj.set_AVL_specs("exfile.txt",4);     //ALWAYS SET ID SPACE OF AVL BEFORE USING IT
+    //AVL<int, string> lo;
+    //lo.set_AVL_specs("exfile.txt",4);     //ALWAYS SET ID SPACE OF AVL BEFORE USING IT
 
-    //obj.insert("Ibrahim", "Aamer");
+    //lo.insert("Ibrahim", "Aamer");
     //obj.insert("Noveen", "Fatima");
     //obj.insert("Omais", "Nisar");
     //obj.insert("Momin", "Tariq");
@@ -70,7 +70,8 @@ int main()
     //obj.deleteNode("Omais");
     //obj.display();
     //Node<int, string>* nd;
-    //nd = obj.searchNode("Ibrahim");
+    //nd = lo.searchNode("Ibrahim");
+    //nd->display();
     //cout << nd->hashed_key << endl;
     //cout <<nd->original_key<<" "<< nd->line_no << endl;
     //nd = obj.searchNode("Noveen");
@@ -144,6 +145,12 @@ int main()
     obj.insert_from_machine("M7", "ibrahim", "Musa");
 
     obj.display_a_machine("M4", 2);
+
+    obj.remove_from_machine("M5", "ibrahim");
+
+    obj.display_a_machine("M4", 2);
+
+    obj.search_from_machine("M4", "ibrahim");
 
 
     /*	//----------INPUT VALIDATION IF USER ENTERS AN ID WHICH ALREADY EXIST-----------//
