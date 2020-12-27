@@ -295,3 +295,14 @@ InfInt hash_value(string key, int num_bits)  //Can return a hash value of 1-256 
 
 	return final_hash;
 }
+
+InfInt log2(InfInt val)
+{
+	InfInt i = 0;
+	while (InfIntpow(2, i) < val)
+	{
+		i++;
+	}
+
+	return i;
+}
