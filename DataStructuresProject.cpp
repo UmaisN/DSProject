@@ -5,214 +5,182 @@
 #include<cmath>
 using namespace std;
 
+
 int main()
 {
-    cout << gen_random(10) << endl;
-
-    //DHT<int, string> mach;
-
-    /////Testing Convert Hex Function///////
-
-    //cout << convert_hex("1E0F4") << endl;
-    //cout << convert_hex("1EF4") << endl;
-    //cout << convert_hex("1F4") << endl;
-    //cout << string_ascii("i192002") << endl;
-    //cout << string_ascii("i192020") << endl;
-
-    //Int to Hex testing
-    //InfInt x = 124134;
-    //cout << int_to_hex(x)<<endl;
-
-    ////Hash function testing
-
-    ////Result first char should be 2, rest should match with online Hasher -- RESULT PASSED
-    //string key = "a";
-    ////cout << key << endl;
-    //cout << hash_value("ibrahi", 7) << endl;
-    //cout << hash_value("sfsf1ab", 7) << endl;
-    //cout << hash_value("facvvc", 7) << endl;
-    //cout << hash_value("skfhba", 7) << endl;
-    //cout << hash_value("vbuybihe", 7) << endl;
-    //cout << hash_value("afkhbvf", 7) << endl;
-    //cout << hash_value("giucbe", 7) << endl;
-    //cout << hash_value("hnmdvhj", 7) << endl;
-
-    ////Result first char should be 0 (NULL), rest should match with online Hasher -- RESULT PASSED (3608bca)
-    //key = hash_value("xyz",29);
-    //cout << key << endl;
-
-    ////Result first char should be 4, rest should match with online Hasher -- RESULT PASSED (9baf34a4)
-    //key = hash_value("max", 31);
-    //cout << key << endl;
-
-    ////Result first char should be 0, rest should match with online Hasher -- RESULT PASSED (d93473b8)
-    //key = hash_value("ibrahimis", 32);
-    //cout << key << endl;
-
-    //cout << hash_value("Ibrahim", 4) << endl;
-    //cout << hash_value("Noveen", 4) << endl;
-    //cout << hash_value("Jaan", 4) << endl;
-    //cout << hash_value("Omais", 4) << endl;
-    //cout << hash_value("Momin", 4) << endl;
-
-    //Testing AVL
-    //AVL<int, string> lo;
-    //lo.set_AVL_specs("exfile.txt",4);     //ALWAYS SET ID SPACE OF AVL BEFORE USING IT
-
-    //lo.insert("Ibrahim", "Aamer");
-    //obj.insert("Noveen", "Fatima");
-    //obj.insert("Omais", "Nisar");
-    //obj.insert("Momin", "Tariq");
-    //obj.insert("Noveen", "hello");
-    //obj.insert("Momin1", "Tariq");
-
-    //obj.display();
-    //obj.deleteNode("Omais");
-    //obj.display();
-    //Node<int, string>* nd;
-    //nd = lo.searchNode("Ibrahim");
-    //nd->display();
-    //cout << nd->hashed_key << endl;
-    //cout <<nd->original_key<<" "<< nd->line_no << endl;
-    //nd = obj.searchNode("Noveen");
-    //cout << nd->hashed_key << endl;
-    //cout << nd->original_key << " " << nd->line_no << endl;
-    //nd = obj.searchNode("Omais");
-    //cout<<nd->hashed_key<<endl;
-    //cout << nd->original_key << " " << nd->line_no << endl;
-    //nd = obj.searchNode("Momin");
-    //cout << nd->hashed_key << endl;
-    //cout << nd->original_key << " " << nd->line_no << endl;
-    //nd = obj.searchNode("Momin1");
-    //cout << nd->hashed_key << endl;
-   // cout << nd->original_key << " " << nd->line_no << endl;
-   // cout<<"search"<<nd->next->original_key << endl;
-
-    //Machine_node<int, string> nod("machine1",5, 4);
-
-    //nod.insert("ibrahim", "aamer");
-    //nod.insert("umais", "nisar");
-    //nod.insert("noveen", "fatima");
-    //nod.insert("noveen", "fatima");
-
-    //nod.display_data();
-
-    //InfInt y = 1024;
-    //cout << log2(y) << endl;
-    cout << "1 " << hash_value("1", 4) << endl;
-    cout << "2 " << hash_value("2", 4) << endl;
-    cout << "3 " << hash_value("3", 4) << endl;
-    cout << "4 " << hash_value("4", 4) << endl;
-    cout << "5 " << hash_value("5", 4) << endl;
-    cout << "6 " << hash_value("6", 4) << endl;
-    cout << "7 " << hash_value("7", 4) << endl;
-    cout << "8 " << hash_value("8", 4) << endl;
-    cout << "8 " << hash_value("9", 4) << endl;
-
-    cout << "ibrahim : " << hash_value("ibrahim", 4) << endl;
-    cout << "noveen : " << hash_value("noveen", 4) << endl;
+    cout << " --------------------------------------------------" << endl;
+    cout << "| EXAMPLE CODE FOR DHT USING 4 BIT IDENTIFIER SPACE |" << endl;
+    cout << " --------------------------------------------------" << endl;
 
     DHT<int, string>dht1(4);
     dht1.insert_machine("1");
     dht1.insert_machine("2");
     dht1.insert_machine("3");
     dht1.insert_machine("4");
-    dht1.insert_machine("5");
-    dht1.insert_machine("0");
-    //dht1.insert_machine("3");
-    dht1.insert_machine("4");
 
 
-
+    cout << endl << " --------------------------------------------------" << endl;
+    cout << "|    DISPLAYING ROUTING TABLES FOR ALL MACHINES     |" << endl;
+    cout << " --------------------------------------------------" << endl;
     dht1.display_machines();
-    cout << endl << endl << "Inserting Ibrahim's data" << endl;
-    dht1.insert_from_machine("0", "Ibrahim", "This is Ibrahim's Data");
-    cout << endl << endl << "Inserting Noveen's data" << endl;
+
+
+    cout << endl << endl << "Inserting the key 'Ibrahim' " << endl;
+    dht1.insert_from_machine("1", "Ibrahim", "This is Ibrahim's Data");
+    cout << endl << endl << "Inserting the key 'Noveen' " << endl;
     dht1.insert_from_machine("2", "Noveen", "This is Noveen's Data");
-    cout << endl << endl << "Inserting Umais's data" << endl;
+    cout << endl << endl << "Inserting the key 'Umais' " << endl;
     dht1.insert_from_machine("4", "Umais", "This is Umais's Data");
-    //obj.insert_machine("7");
-    //obj.insert_machine("3");   //id = 15
-   // obj.display_machines();
+    cout << endl << endl << "Inserting the key 'Aamer' " << endl;
+    dht1.insert_from_machine("3", "Aamer", "This is Aamer's Data");
 
-    //obj.insert_machine("M8");   //id = 15
+    cout << endl << endl << "To also show duplicates, we will insert more data with the key 'Ibrahim' " << endl;
+    dht1.insert_from_machine("2", "Ibrahim", "This is Ibrahim's Data Part 2");
 
-    //obj.display_a_machine("M3", 2);
+    cout << endl << " --------------------------------------------------" << endl;
+    cout << "|     DISPLAYING AVL TREES FOR ALL MACHINES       |" << endl;
+    cout << " --------------------------------------------------" << endl;
 
-    //obj.display_a_machine("M5", 2);
+    dht1.display_a_machine("1", 2);
+    dht1.display_a_machine("2", 2);
+    dht1.display_a_machine("3", 2);
+    dht1.display_a_machine("4", 2);
 
+    cout << endl << hash_value("Umais", 4);
 
+    /*
 
-   // obj.insert_machine("M4");   //id = 1
+    cout << " --------------------------------------------------" << endl;
+    cout << "|                  USER  DRIVEN DHT                 |" << endl;
+    cout << " --------------------------------------------------" << endl;
 
-    /*	//----------INPUT VALIDATION IF USER ENTERS AN ID WHICH ALREADY EXIST-----------//
+    int identifier_space, num_of_machines, manual_choice;
+    string machine_id;
+    cout << "Specify the size of the identifier space : ";
+    cin >> identifier_space;
+    DHT<int, string>dht2(identifier_space);
 
-        InfInt hashed_ID = hash_value(machine_id, this->ID_space);
+    cout << endl << "Specify the number of machines : ";
+    cin >> num_of_machines;
+    cout << "Do you want to manually assign the ID to each machine? Press 1 for YES: ";
+    cin >> manual_choice;
 
-
-        while (this->check_ID(hashed_ID)) //Loop runs until a new ID is entered
+    for (int i = 0; i < num_of_machines; i++)
+    {
+        if (manual_choice == 1) //If User is assigning IDs
         {
-            cout << "Entered ID already exists !" << endl;
-            cout << "    Kindly Enter a new ID : ";
+            cout << endl << "Input ID for Machine "<<i<<" : ";
             cin >> machine_id;
+            //----------INPUT VALIDATION IF USER ENTERS AN ID WHICH ALREADY EXIST-----------//
 
-            hashed_ID = hash_value(machine_id, this->ID_space);//deriving hash of new ID
+            InfInt hashed_ID = hash_value(machine_id, identifier_space);
+
+
+            while (dht2.check_ID(hashed_ID)) //Loop runs until a new ID is entered
+            {
+                cout <<endl<< "Entered ID already exists !" << endl;
+                cout << "    Kindly Enter a new ID : ";
+                cin >> machine_id;
+
+                hashed_ID = hash_value(machine_id, identifier_space);//deriving hash of new ID
+            }
+
+            //Now that we have a unique hashed_ID, we can create the machine
+            dht2.insert_machine(machine_id);
+
+        }
+        else //If Randomly Assigning ID
+        {
+            machine_id=gen_random(10); //Value 10 can be changed to anything, it does not matter in the long run
+            //----------INPUT VALIDATION IF USER ENTERS AN ID WHICH ALREADY EXIST-----------//
+
+            InfInt hashed_ID = hash_value(machine_id, identifier_space);
+
+
+            while (dht2.check_ID(hashed_ID)) //Loop runs until a new ID is generated
+            {
+                machine_id=gen_random(10);
+                hashed_ID = hash_value(machine_id, identifier_space);//deriving hash of new ID
+            }
+
+            //Now that we have a unique hashed_ID, we can create the machine
+            dht2.insert_machine(machine_id);
         }
 
-        //------------------------------------------------------------------------------//
-    */
+    }
 
     //Menu
- /*   int choice = 0;
-    while (choice != 10) {
+    int choice = 0;
+    while (choice != 10)
+    {
         cout << "---------Menu-----------" << endl;
-        cout << "1) Specify the number of machines " << endl;
-        cout << "2) Specify the size of identifier space" << endl;
-        cout << "3) Manually assign Id to each machine" << endl;
-        cout << "4) Insert data in the form of key" << endl;
-        cout << "5) Remove data by specifying the key from any machine" << endl;
-        cout << "6) Print the routing table of any machine" << endl;
-        cout << "7) Print the AVL tree on any machine" << endl;
-        cout << "8) Add new machines" << endl;
-        cout << "9) Remove any machine" << endl;
-        cout << "10) Exit" << endl;
+        cout << "1) Insert data in the form of key" << endl;
+        cout << "2) Remove data by specifying the key from any machine" << endl;
+        cout << "3) Print the routing table of a machine" << endl;
+        cout << "4) Print the AVL tree of a machine" << endl;
+        cout << "5) Print the routing tables of all machines" << endl;
+        cout << "6) Add a new machine on the fly" << endl;
+        cout << "7) Remove any machine" << endl;
+        cout << "8) Exit" << endl;
         cout << endl;
         cout << "Please select an option: ";
         cin >> choice;
-        if (choice == 1) {
+        if (choice == 1)
+        {
+            string key, data;
+            cout << endl << "Input the key: ";
+            cin >> key;
+            cout << endl << "Input the data: ";
+            cin >> data;
+            cout << endl << "Input the Machine ID from which we will begin the insertion process: ";
+            cin >> machine_id;
+            dht2.insert_from_machine(machine_id, key, data);
+        }
+        else if (choice == 2)
+        {
+            string key, data;
+            cout << endl << "Input the key: ";
+            cin >> key;
+            cout << endl << "Input the data: ";
+            cin >> data;
+            cout << endl << "Input the Machine ID from which we will begin the insertion process: ";
+            cin >> machine_id;
+            dht2.remove_from_machine(machine_id, key, data);
+        }
+        else if (choice == 3)
+        {
+            cout << endl << "Enter the ID of the machine: ";
+            cin >> machine_id;
+            dht2.display_a_machine(machine_id, 1);
+        }
+        else if (choice == 4)
+        {
+            cout << endl << "Enter the ID of the machine: ";
+            cin >> machine_id;
+            dht2.display_a_machine(machine_id, 2);
+        }
+        else if (choice == 5)
+        {
+            dht2.display_machines();
+        }
+        else if (choice == 6)
+        {
 
         }
-        else if (choice == 2) {
+        else if (choice == 7)
+        {
 
         }
-        else if (choice == 3) {
-
-        }
-        else if (choice == 4) {
-
-        }
-        else if (choice == 5) {
-
-        }
-        else if (choice == 6) {
-
-        }
-        else if (choice == 7) {
-
-        }
-        else if (choice == 8) {
-
-        }
-        else if (choice == 9) {
-
-        }
-        else if (choice == 10) {
+        else if (choice == 8)
+        {
             break;
         }
-        else {
+        else
+        {
             cout << "Invalid option selected." << endl;
         }
-    }*/
+    }
+*/
 }
 
 
