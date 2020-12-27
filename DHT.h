@@ -208,6 +208,79 @@ private:
 		return NULL;//if no match found NULL returned.
 	}
 
+
+	//This function takes machine node pointer and key value pair,
+	//Insertion can be done from any machine.
+	//(Finger table used to navigate to correct machine).
+	void machine_insertdata(Machine_node<T, S>* mach_node, S str_key, S str_data)
+	{
+		cout << "Query arrived at " << mach_node->ID_str << "(" << mach_node->ID << ")." << endl;
+
+		InfInt hash_str = hash_value(str_key, this->ID_space);//hashing the key and storing its value to match with machine ID hash
+
+		//--------------------------------FINDING SIZE OF FT TABLE--------------------------------------------//
+
+		//Storing maximium number of machines which can be registered on DHT by doing 2^ID_space.
+		static InfInt total_machines = InfIntpow(2, this->ID_space);
+
+		//Variable to store total number of FT entries which will be log2(total_machines).
+		static InfInt FT_size = log2(total_machines);
+
+		//---------------------------------------------------------------------------------------------------//
+
+		int index = 1;
+
+
+		for (InfInt c = 0; c < FT_size; ++c) //Looping over FT linked list
+		{
+			//nodeptr = mach_node->FT.get_at(index);//retrieving machine node at the FT table of mach_node.
+
+			InfInt x = index;
+			if (x == FT_size - 1)
+			{	//If loop reaches last index then query is forwarded to last index
+				machine_insertdata(mach_node->FT.get_at(index), str_key, str_data);
+
+				return;
+			}
+
+			//If inserted keys hash is equal to mach_node ID then its inserted on the machine
+			else if (hash_str == mach_node->ID)
+			{
+				cout << "Data inserted at " << mach_node->ID_str << "(" << mach_node->ID << ")." << endl;
+
+				mach_node->insert(str_key, str_data);//Key value pair inserted at the machine
+
+				return;
+			}
+			else if (hash_str > mach_node->ID && hash_str <= mach_node->FT.get_at(1)->ID)
+			{	//p < eand e <= FTp[1].In this case, the search request is forwarded to the machine
+				//	FTp[1], i.e., first entry of routing table entry.
+
+				Machine_node<T, S>* tmp = mach_node->FT.get_at(1);//setting tmp pointer to FTp[1].
+
+				//inserting data at Ftp[1].
+				cout << "Query arrived at " << tmp->ID_str << "(" << tmp->ID << ")." << endl;
+				cout << "Data inserted at " << tmp->ID_str << "(" << tmp->ID << ")." << endl;
+
+				tmp->insert(str_key, str_data);
+
+				return;
+			}
+			else if (hash_str > mach_node->FT.get_at(index)->ID && hash_str <= mach_node->FT.get_at(index + 1)->ID)
+			{
+				//FTp[j] < e <= FTp[ j+1]. In this case the search request is forwarded to the machine FTp[j].
+
+				machine_insertdata(mach_node->FT.get_at(index), str_key, str_data);
+
+				return;
+			}
+
+
+			index++;
+		}
+
+	}
+
 public:
 
 	DHT()
@@ -224,20 +297,31 @@ public:
 		this->ID_space = id_space;
 	}
 
-	//This function takes machine node pointer and key value pair,
-	//Insertion can be done from any machine.
-	//(Finger table used to navigate to correct machine).
-	void machine_insert(Machine_node<T, S>* mach_node, string str_key, string str_data)
-	{
-
-
-	}
 
 	//This function is public and takes machine ID string to insert data in system from any machine.
 	//Takes key, value pairs as a parameter.
 	void insert_from_machine(string machine_id, string str_key, string str_data)
 	{
+		InfInt hash_key = hash_value(machine_id, this->ID_space);//hashing the given ID of Machine
 
+		Machine_node<T, S>* mach_ptr = this->search_ID(hash_key);//looking for derived hash key in Machine List
+
+		//If machine with the given ID is found then Insertion starts from their
+		if (mach_ptr != NULL)
+		{
+			//Recursive function called which looks for the right
+			//right machine to add data to, but the search starts from the
+			//given machine.
+			this->machine_insertdata(mach_ptr, str_key, str_data);
+
+		}
+		else
+		{
+			//If mach_ptr == NULL, it means search in Machine list failed to locate any machine with given ID
+			//Therefore prompt user that no Machine exists with that Data
+
+			cout << "No Machine registered with the given ID" << endl;
+		}
 	}
 
 	//Function to insert a new machine into DHT, takes machine ID string as a parameter
@@ -328,7 +412,7 @@ public:
 
 		while (nodeptr != head || loop_flag == false)
 		{
-			cout << nodeptr->ID_str << " : ";
+			cout << nodeptr->ID_str << "prev : ";// << nodeptr->prev->ID;
 			nodeptr->FT.display_FT();
 
 			nodeptr = nodeptr->next;
@@ -381,6 +465,25 @@ public:
 	{
 		head = NULL;
 		tail = NULL;
+	}
+
+	//The following function gets the machine_node stored at the given index of FT linked list
+	Machine_node<T, S>* get_at(int index)
+	{
+		int count = 1;
+
+		FT_node<T, S>* nodeptr = this->head;//initializing a ptr with head for iteration
+
+		while (nodeptr != NULL)
+		{
+			if (index == count)
+			{
+				return nodeptr->Machine_ptr;//If index found, then machine ptr at that index returned
+			}
+
+			count++;//inc count
+			nodeptr = nodeptr->next;//updating nodeptr
+		}
 	}
 
 	//Function to insert machine pointer into FT linked list(Takes machine node pointer as parameter)

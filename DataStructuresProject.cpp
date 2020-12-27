@@ -125,12 +125,26 @@ int main()
     obj.insert_machine("M9");
     obj.insert_machine("M10");
     obj.insert_machine("M11");
+    obj.insert_machine("M12");
+    obj.insert_machine("M13");
+    obj.insert_machine("M14");
+    obj.insert_machine("M15");
+    obj.insert_machine("M16");
+    obj.insert_machine("M17");
+    obj.insert_machine("M18");
 
     cout << endl;
 
 
     obj.display_machines();
 
+    cout << hash_value("ibrahim", 8) << endl;
+
+    obj.insert_from_machine("M18", "ibrahim", "aamer");
+
+    cout << hash_value("hello", 8) << endl;
+
+    obj.insert_from_machine("M8", "hello", "Musa");
 
 
     /*	//----------INPUT VALIDATION IF USER ENTERS AN ID WHICH ALREADY EXIST-----------//
