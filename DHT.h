@@ -2,7 +2,7 @@
 #include"AVLTree.h"
 #include"Hashing.h"
 #include"InfInt.h"
-#include <ctime>
+#include<ctime>
 #include<cmath>
 #include<iostream>
 #include<fstream>
@@ -156,31 +156,7 @@ private:
 	}
 	//----------------------------------------------------------------------------------//
 
-	//Function to check repeatition of hash ID 
-	//If it repeats it returns true else false
-	bool check_ID(InfInt hash_ID)
-	{
-		if (this->head != NULL)
-		{
-			Machine_node<T, S>* nodeptr = head;//pointer to iterate over linked list of machines
 
-			bool loop_flag = false;//Flag variable to make sure loop doesnt iterarte more than once over the list
-						   //because its a circular list
-
-			while (nodeptr != head || loop_flag == false)
-			{
-				if (nodeptr->ID == hash_ID)
-				{
-					return true;//True returned on finding a match
-				}
-
-				nodeptr = nodeptr->next;
-				loop_flag = true;
-			}
-		}
-
-		return false;//if no match found false returned.
-	}
 
 	//Function to check repeatition of hash ID 
 	//If it repeats it returns true else false
@@ -238,13 +214,30 @@ private:
 			InfInt x = index;
 			if (x == FT_size - 1)
 			{	//If loop reaches last index then query is forwarded to last index
+
+
+				cout << "->Query arrived at " << head->ID_str << "(" << head->ID << ")." << endl;
+				cout << "Data inserted at " << head->ID_str << "(" << head->ID << ")." << endl;
+
+				this->head->insert(str_key, str_data);
+
+				return;
+
+
 				machine_insertdata(mach_node->FT.get_at(index), str_key, str_data);
 
 				return;
 			}
+			else if (hash_str > mach_node->ID && mach_node->next == this->head)
+			{
+				cout << "Data inserted at " << mach_node->ID_str << "(" << mach_node->ID << ")." << endl;
 
+				mach_node->insert(str_key, str_data);//Key value pair inserted at the machine
+
+				return;
+			}
 			//If inserted keys hash is equal to mach_node ID then its inserted on the machine
-			else if (hash_str == mach_node->ID)
+			else if (hash_str == mach_node->ID || mach_node == mach_node->next)
 			{
 				cout << "Data inserted at " << mach_node->ID_str << "(" << mach_node->ID << ")." << endl;
 
@@ -310,6 +303,26 @@ private:
 			InfInt x = index;
 			if (x == FT_size - 1)
 			{	//If loop reaches last index then query is forwarded to last index
+
+				cout << "->Query arrived at " << head->ID_str << "(" << head->ID << ")." << endl;
+				cout << "->Looking for searched key at " << head->ID_str << "(" << head->ID << ")." << endl;
+
+				Node<T, S>* search = head->Data_Tree.searchNode(str_key);//searching given key at AVL of mach node
+
+				if (search == NULL)
+				{
+					cout << "\nYour search did not match any Key in data ! " << endl;
+				}
+				else
+				{
+					cout << "\nSEARCHED MACTHED !\n\nData : \n\n";
+					cout << search->display();//if search found then AVL node info is displayed
+					cout << endl;
+				}
+
+				return;
+
+
 				machine_searchdata(mach_node->FT.get_at(index), str_key);
 
 				return;
@@ -403,9 +416,32 @@ private:
 			InfInt x = index;
 			if (x == FT_size - 1)
 			{	//If loop reaches last index then query is forwarded to last index
-				machine_removedata(mach_node->FT.get_at(index), str_key);
+
+				Machine_node<T, S>* tmp = mach_node->FT.get_at(1);
+
+				cout << "->Query arrived at " << head->ID_str << "(" << head->ID << ")." << endl;
+				cout << "->Looking for searched key at " << head->ID_str << "(" << head->ID << ")." << endl;
+
+				Node<T, S>* search = head->Data_Tree.searchNode(str_key);//searching given key at AVL of mach node
+
+				if (search == NULL)
+				{
+					cout << "\nYour search did not match any Key in data ! " << endl;
+				}
+				else
+				{
+					cout << "\nKEY MACTHED !\n\nData : \n\n";
+					cout << search->display();//if search found then AVL node info is displayed
+					cout << endl;
+					head->Data_Tree.deleteNode(str_key);//now deleting
+					cout << "\nKey deleted successfully !" << endl;
+				}
 
 				return;
+
+				//machine_removedata(mach_node->FT.get_at(index), str_key);
+
+				//return;
 			}
 
 			//If inserted keys hash is equal to mach_node ID then its inserted on the machine
@@ -472,6 +508,64 @@ private:
 	}
 
 
+	//--------------------------------------------------------------------------------------------------------//
+
+	//This function will take two parameters.
+	//FIRST PARAMETER  = Old machine node's avl tree root.
+	//SECOND PARAMETER = AVL tree obj of old machine.
+	//THIRD PARAMETER  = Newly added machine's node pointer.
+	//FOURTH PARAMETER = Old machine's node pointer.
+	void insert_postorder(Node<T, S>*& tree_node, AVL<T, S>& tree, Machine_node<T, S>*& new_mach, Machine_node<T, S>*& old_mach)
+	{
+		if (tree_node == NULL)
+			return;
+
+		insert_postorder(tree_node->left, tree, new_mach, old_mach);
+		insert_postorder(tree_node->right, tree, new_mach, old_mach);
+
+
+		if (tree_node->hashed_key <= new_mach->ID && tree_node->hashed_key > old_mach->ID)
+		{
+
+			new_mach->insert(tree_node->original_key, tree_node->data);//inserting in new machine
+
+			tree.deleteNode(tree_node->original_key);//deleting current node from old machine
+		}
+
+	}
+
+	//This Function takes two neighboring machine node pointers as Paremeters and balances their AVL trees
+	//The first parametr in this case is the newly inserted node which will get its appropriate data from next 
+	//machine node, which supposedly has its data.-----------------------------------------------------------//
+	void update_trees_insert(Machine_node<T, S>* mach_node1, Machine_node<T, S>* mach_node2)
+	{	//(new_mach, new_mach->next);
+
+		if (mach_node1 != mach_node1->next && mach_node1->Data_Tree.root != NULL)
+			this->insert_postorder(mach_node2->Data_Tree.root, mach_node2->Data_Tree, mach_node1, mach_node2);
+	}
+	//---------------------------------------------------------------------------------------------------------//
+	//This function will take two parameters.
+	//FIRST PARAMETER  = Deleted machine node's avl tree root.
+	//SECOND PARAMETER = AVL tree obj of old machine.
+	//THIRD PARAMETER  = Newly added machine's node pointer.
+	//FOURTH PARAMETER  = Old machine's node pointer.
+	void delete_postorder(Node<T, S>*& tree_node, AVL<T, S>& tree, Machine_node<T, S>*& next_mach, Machine_node<T, S>*& old_mach)
+	{
+		if (tree_node == NULL)
+			return;
+
+		delete_postorder(tree_node->left, tree, next_mach, old_mach);
+		delete_postorder(tree_node->right, tree, next_mach, old_mach);
+
+		//All data on the old node(Node to be deleted) will be pushed to the next neighboring node
+		//and will be deleted from here.
+
+		next_mach->insert(tree_node->original_key, tree_node->data);//Inserting in new machine.
+
+		tree.deleteNode(tree_node->original_key);//Deleting current node from old machine.
+
+	}
+
 public:
 
 	DHT()
@@ -505,6 +599,52 @@ public:
 			//given machine.
 			this->machine_insertdata(mach_ptr, str_key, str_data);
 
+		}
+		else
+		{
+			//If mach_ptr == NULL, it means search in Machine list failed to locate any machine with given ID
+			//Therefore prompt user that no Machine exists with that Data
+
+			cout << "No Machine registered with the given ID" << endl;
+		}
+	}
+
+	//This function is public and takes machine ID string to insert data in system from any machine.
+	//Takes key, value pairs as a parameter.
+	void delete_machine(string machine_id)
+	{
+		InfInt hash_key = hash_value(machine_id, this->ID_space);//hashing the given ID of Machine
+
+		Machine_node<T, S>* mach_ptr = this->search_ID(hash_key);//looking for derived hash key in Machine List
+
+		//If there is only one machine in system then no need to adjust AVL
+		if (mach_ptr == mach_ptr->next)
+		{
+			//delete mach_ptr;
+			mach_ptr = NULL;
+			this->head = NULL;
+		}
+		//If machine with the given ID is found then deletion starts from their
+		else if (mach_ptr != NULL)
+		{
+			//Recursive function called which looks for the right
+			//right machine to delete from DHT
+			this->delete_postorder(mach_ptr->Data_Tree.root, mach_ptr->Data_Tree, mach_ptr->next, mach_ptr);
+
+			//Now that AVL data has been moved to the next machine's data.
+			//We will remove mach_ptr from linked list
+			Machine_node<T, S>* nodeptr = this->head;
+
+			//Iterating over machine linked list.
+			while (nodeptr->next != this->head)
+			{
+				//Creating a link between mach->prev and mach->next
+				if (nodeptr->next == mach_ptr)
+				{
+					nodeptr->next = mach_ptr->next; //link made, and mach_ptr removed from list
+					break;
+				}
+			}
 		}
 		else
 		{
@@ -573,19 +713,19 @@ public:
 	void insert_machine(string machine_id)
 	{
 
-
 		InfInt hash_id = hash_value(machine_id, this->ID_space);
 
+		if (this->check_ID(hash_id) == true)
+			return;
+
+
 		Machine_node<T, S>* new_mach = new Machine_node<T, S>(machine_id, hash_id, this->ID_space);
-		new_mach->next = NULL;
+		//new_mach->next = NULL;
 
 		if (head == NULL) //if list was empty head points to new machine
 		{
 			head = new_mach;
-			head->next = head;
-			head->prev = head;
-			tail = new_mach;
-
+			new_mach->next = head;
 		}
 		else if (head->next == head) //Handling second entry[When there is only one machine].
 		{
@@ -594,13 +734,13 @@ public:
 			{
 				head->next = new_mach;//head newx to new mach
 				new_mach->next = head;//new mach next to head because list is circular
-				new_mach->prev = head;
-				tail = new_mach;
+				//new_mach->prev = head;
+				//tail = new_mach;
 			}
 			else //if new mach ID < head ID
 			{
-				tail = head;
-				head->prev = new_mach;
+				//tail = head;
+				//head->prev = new_mach;
 				head->next = new_mach;
 				new_mach->next = head;
 				head = new_mach;
@@ -642,7 +782,8 @@ public:
 			}
 		}
 
-		//this->update_Data_trees(new_mach,new_mach->next);
+
+		this->update_trees_insert(new_mach, new_mach->next);
 
 		this->Update_Finger_Tables();//Updating finger tables
 	}
@@ -667,7 +808,10 @@ public:
 			else if (option == 2)
 			{
 				cout << "\nAVL : ";
-				nodeptr->Data_Tree.display();
+				if (nodeptr->Data_Tree.root != NULL)
+					nodeptr->Data_Tree.display();
+				else
+					cout << "AVL Tree is empty\n";
 				cout << endl;
 				cout << "File location : .\\" << nodeptr->ID_str << ".txt\n" << endl;
 			}
@@ -691,13 +835,39 @@ public:
 
 		while (nodeptr != head || loop_flag == false)
 		{
-			cout << nodeptr->ID_str << "prev : ";// << nodeptr->prev->ID;
+			cout << nodeptr->ID_str << "(" << nodeptr->ID << ") ";// << nodeptr->prev->ID;
 			nodeptr->FT.display_FT();
 
 			nodeptr = nodeptr->next;
 			loop_flag = true;
 		}
 		cout << endl;
+	}
+
+	//Function to check repeatition of hash ID 
+//If it repeats it returns true else false
+	bool check_ID(InfInt hash_ID)
+	{
+		if (this->head != NULL)
+		{
+			Machine_node<T, S>* nodeptr = head;//pointer to iterate over linked list of machines
+
+			bool loop_flag = false;//Flag variable to make sure loop doesnt iterarte more than once over the list
+						   //because its a circular list
+
+			while (nodeptr != head || loop_flag == false)
+			{
+				if (nodeptr->ID == hash_ID)
+				{
+					return true;//True returned on finding a match
+				}
+
+				nodeptr = nodeptr->next;
+				loop_flag = true;
+			}
+		}
+
+		return false;//if no match found false returned.
 	}
 
 };
