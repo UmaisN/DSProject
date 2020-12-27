@@ -215,14 +215,34 @@ private:
 			if (x == FT_size - 1)
 			{	//If loop reaches last index then query is forwarded to last index
 
+				//if()
 
-				cout << "->Query arrived at " << head->ID_str << "(" << head->ID << ")." << endl;
-				cout << "Data inserted at " << head->ID_str << "(" << head->ID << ")." << endl;
+				//cout << "->Query arrived at " << head->ID_str << "(" << head->ID << ")." << endl;
+				//cout << "Data inserted at " << head->ID_str << "(" << head->ID << ")." << endl;
 
-				this->head->insert(str_key, str_data);
+				//this->head->insert(str_key,str_data);
 
-				return;
+				//return;
 
+				//if (hash_str > mach_node->FT.get_at(index)->ID) 
+				//{
+					//machine_insertdata(head, str_key, str_data);
+
+					//return;
+				//}
+
+				//cout << "Tail" << tail->ID << endl;
+
+				if (hash_str > tail->ID || (hash_str >= 0 && hash_str <= this->head->ID))
+				{
+
+					cout << "->Query arrived at " << head->ID_str << "(" << head->ID << ")." << endl;
+					cout << "Data inserted at " << head->ID_str << "(" << head->ID << ")." << endl;
+
+					head->insert(str_key, str_data);
+
+					return;
+				}
 
 				machine_insertdata(mach_node->FT.get_at(index), str_key, str_data);
 
@@ -524,9 +544,9 @@ private:
 		insert_postorder(tree_node->right, tree, new_mach, old_mach);
 
 
-		if (tree_node->hashed_key <= new_mach->ID && tree_node->hashed_key > old_mach->ID)
+		if (tree_node->hashed_key <= new_mach->ID/* && tree_node->hashed_key > old_mach->ID*/)
 		{
-
+			cout << "booooo" << endl;
 			new_mach->insert(tree_node->original_key, tree_node->data);//inserting in new machine
 
 			tree.deleteNode(tree_node->original_key);//deleting current node from old machine
@@ -540,8 +560,11 @@ private:
 	void update_trees_insert(Machine_node<T, S>* mach_node1, Machine_node<T, S>* mach_node2)
 	{	//(new_mach, new_mach->next);
 
-		if (mach_node1 != mach_node1->next && mach_node1->Data_Tree.root != NULL)
+		if (mach_node1 != mach_node1->next)
+		{
+
 			this->insert_postorder(mach_node2->Data_Tree.root, mach_node2->Data_Tree, mach_node1, mach_node2);
+		}
 	}
 	//---------------------------------------------------------------------------------------------------------//
 	//This function will take two parameters.
@@ -560,9 +583,16 @@ private:
 		//All data on the old node(Node to be deleted) will be pushed to the next neighboring node
 		//and will be deleted from here.
 
-		next_mach->insert(tree_node->original_key, tree_node->data);//Inserting in new machine.
+		//cout << "hello" << endl;
 
-		tree.deleteNode(tree_node->original_key);//Deleting current node from old machine.
+		next_mach->insert(tree_node->original_key, tree_node->data);//Inserting in new machine.
+		Node<T, S> * temp = tree_node->next;
+		while(temp!=NULL)
+		{
+			next_mach->insert(temp->original_key, temp->data);
+			temp = temp->next;
+		}
+		//tree.deleteNode(tree_node->original_key);//Deleting current node from old machine.
 
 	}
 
@@ -572,7 +602,7 @@ public:
 	{
 		head = NULL;
 		tail = NULL;
-		cout << "hello" << endl;
+		//cout << "hello" << endl;
 	}
 
 	DHT(int id_space)
@@ -627,6 +657,8 @@ public:
 		//If machine with the given ID is found then deletion starts from their
 		else if (mach_ptr != NULL)
 		{
+			//cout << mach_ptr->ID << endl;
+
 			//Recursive function called which looks for the right
 			//right machine to delete from DHT
 			this->delete_postorder(mach_ptr->Data_Tree.root, mach_ptr->Data_Tree, mach_ptr->next, mach_ptr);
@@ -634,7 +666,7 @@ public:
 			//Now that AVL data has been moved to the next machine's data.
 			//We will remove mach_ptr from linked list
 			Machine_node<T, S>* nodeptr = this->head;
-
+			//cout << "hello111" << endl;
 			//Iterating over machine linked list.
 			while (nodeptr->next != this->head)
 			{
@@ -644,6 +676,8 @@ public:
 					nodeptr->next = mach_ptr->next; //link made, and mach_ptr removed from list
 					break;
 				}
+
+				nodeptr = nodeptr->next;
 			}
 		}
 		else
@@ -716,8 +750,10 @@ public:
 		InfInt hash_id = hash_value(machine_id, this->ID_space);
 
 		if (this->check_ID(hash_id) == true)
+		{
+			cout << "Repeat" << endl;
 			return;
-
+		}
 
 		Machine_node<T, S>* new_mach = new Machine_node<T, S>(machine_id, hash_id, this->ID_space);
 		//new_mach->next = NULL;
@@ -726,6 +762,8 @@ public:
 		{
 			head = new_mach;
 			new_mach->next = head;
+			tail = head;
+
 		}
 		else if (head->next == head) //Handling second entry[When there is only one machine].
 		{
@@ -735,7 +773,7 @@ public:
 				head->next = new_mach;//head newx to new mach
 				new_mach->next = head;//new mach next to head because list is circular
 				//new_mach->prev = head;
-				//tail = new_mach;
+				tail = new_mach;
 			}
 			else //if new mach ID < head ID
 			{
@@ -744,6 +782,7 @@ public:
 				head->next = new_mach;
 				new_mach->next = head;
 				head = new_mach;
+				tail = new_mach->next;
 
 			}
 		}
@@ -774,8 +813,22 @@ public:
 					new_mach->prev = nodeptr2;
 					tail = new_mach;
 
+
 					break;
 				}
+				else if (new_mach->ID < nodeptr2->ID && nodeptr2->next == head && new_mach->ID < head->ID)
+				{
+					//If end of list is reached and node still not inserted then node will be inserted at last. 
+
+					new_mach->next = head;
+					nodeptr2->next = new_mach;
+					tail = nodeptr2;
+
+					head = new_mach;
+
+					break;
+				}
+
 
 				nodeptr = nodeptr->next;//Updating nodeptr
 				nodeptr2 = nodeptr2->next;
@@ -965,6 +1018,7 @@ public:
 	//updates the Machines Finger Table.
 	void Update_F_Table(DHT<T, S> machine_list, InfInt machine_ID)
 	{
+		//this->clear_FT();
 
 		//Storing maximium number of machines which can be registered on DHT by doing 2^ID_space.
 		InfInt total_machines = InfIntpow(2, machine_list.ID_space);
@@ -994,6 +1048,8 @@ public:
 				if (succ >= total_machines)
 				{
 					succ = succ % total_machines;
+
+
 				}
 
 				//cout << "succ : "<<machine_ID<<" " << succ << endl;
@@ -1005,11 +1061,14 @@ public:
 
 				bool succ_set = false;//Flag to hold status of wether or not new FT node inserted.
 
+				bool runflag = false;
+
 				//Iterating over linked list of machines until the head is reached again
-				while (mach_ptr2 != machine_list.head)
+				while (mach_ptr2 != machine_list.head->next || runflag == false)
 				{
 					if (succ <= mach_ptr->ID)
 					{
+
 						this->insert(mach_ptr);//inserting machine pointer in Finger table.
 						succ_set = true;
 						break;
@@ -1017,6 +1076,7 @@ public:
 
 					mach_ptr = mach_ptr->next;//Updating mach_ptr
 					mach_ptr2 = mach_ptr2->next;
+					runflag = true;
 
 				}
 
