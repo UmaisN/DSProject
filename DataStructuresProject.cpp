@@ -100,127 +100,105 @@ int main()
     //InfInt y = 1024;
     //cout << log2(y) << endl;
 
-    DHT<int, string> obj(8);
+    cout << "M1 " << hash_value("M1", 4) << endl;
+    cout << "M2 " << hash_value("M2", 4) << endl;
+    cout << "M3 " << hash_value("M3", 4) << endl;
+    cout << "M4 " << hash_value("M4", 4) << endl;
+    cout << "M5 " << hash_value("M5", 4) << endl;
+    cout << "M6 " << hash_value("M7", 4) << endl;
+    cout << "ibrahim : " << hash_value("ibrahim", 4) << endl;
+    cout << "Musa : " << hash_value("Musa", 4) << endl;
 
-    cout << "M1 " << hash_value("M1", 8) << endl;
-    cout << "M2 " << hash_value("M2", 8) << endl;
-    cout << "M3 " << hash_value("M3", 8) << endl;
-    cout << "M4 " << hash_value("M4", 8) << endl;
-    cout << "M5 " << hash_value("M5", 8) << endl;
-    cout << "M6 " << hash_value("M6", 8) << endl;
-    cout << "M7 " << hash_value("M7", 8) << endl;
-    cout << "M8 " << hash_value("M8", 8) << endl;
-    cout << "M9 " << hash_value("M9", 8) << endl;
-    cout << "M10 " << hash_value("M10", 8) << endl;
-    cout << "M11 " << hash_value("M11", 8) << endl;
+    DHT<int, string> obj(4);
 
+    //obj.insert_machine("M1");
+    //obj.insert_machine("M2");
+    //obj.insert_machine("M3");
+    //obj.insert_machine("M4");   //id = 1
+    obj.insert_machine("M5");   //id = 5
+    //obj.insert_machine("M7");
 
-    obj.insert_machine("M1");
-    obj.insert_machine("M2");
-    obj.insert_machine("M3");
-    obj.insert_machine("M4");
-    obj.insert_machine("M5");
-    obj.insert_machine("M6");
-    obj.insert_machine("M7");
-    obj.insert_machine("M8");
-    obj.insert_machine("M9");
-    obj.insert_machine("M10");
-    obj.insert_machine("M11");
-    obj.insert_machine("M12");
-    obj.insert_machine("M13");
-    obj.insert_machine("M14");
-    obj.insert_machine("M15");
-    obj.insert_machine("M16");
-    obj.insert_machine("M17");
-    obj.insert_machine("M18");
+    obj.insert_from_machine("M5", "ibrahim", "aamer");
+    obj.insert_from_machine("M5", "Musa", "hello");
+    obj.display_a_machine("M5", 2);
 
-    cout << endl;
+    obj.insert_machine("M3");   //id = 15
+
+    obj.display_a_machine("M3", 2);
+
+    obj.display_a_machine("M5", 2);
 
 
-    obj.display_machines();
+    // obj.insert_machine("M4");   //id = 1
 
-    cout << hash_value("ibrahim", 8) << endl;
+     /*	//----------INPUT VALIDATION IF USER ENTERS AN ID WHICH ALREADY EXIST-----------//
 
-    obj.insert_from_machine("M7", "ibrahim", "aamer");
-    obj.insert_from_machine("M7", "ibrahim", "Musa");
-
-    obj.display_a_machine("M4", 2);
-
-    obj.remove_from_machine("M5", "ibrahim");
-
-    obj.display_a_machine("M4", 2);
-
-    obj.search_from_machine("M4", "ibrahim");
+         InfInt hashed_ID = hash_value(machine_id, this->ID_space);
 
 
-    /*	//----------INPUT VALIDATION IF USER ENTERS AN ID WHICH ALREADY EXIST-----------//
+         while (this->check_ID(hashed_ID)) //Loop runs until a new ID is entered
+         {
+             cout << "Entered ID already exists !" << endl;
+             cout << "    Kindly Enter a new ID : ";
+             cin >> machine_id;
 
-        InfInt hashed_ID = hash_value(machine_id, this->ID_space);
+             hashed_ID = hash_value(machine_id, this->ID_space);//deriving hash of new ID
+         }
 
+         //------------------------------------------------------------------------------//
+     */
 
-        while (this->check_ID(hashed_ID)) //Loop runs until a new ID is entered
-        {
-            cout << "Entered ID already exists !" << endl;
-            cout << "    Kindly Enter a new ID : ";
-            cin >> machine_id;
+     //Menu
+  /*   int choice = 0;
+     while (choice != 10) {
+         cout << "---------Menu-----------" << endl;
+         cout << "1) Specify the number of machines " << endl;
+         cout << "2) Specify the size of identifier space" << endl;
+         cout << "3) Manually assign Id to each machine" << endl;
+         cout << "4) Insert data in the form of key" << endl;
+         cout << "5) Remove data by specifying the key from any machine" << endl;
+         cout << "6) Print the routing table of any machine" << endl;
+         cout << "7) Print the AVL tree on any machine" << endl;
+         cout << "8) Add new machines" << endl;
+         cout << "9) Remove any machine" << endl;
+         cout << "10) Exit" << endl;
+         cout << endl;
+         cout << "Please select an option: ";
+         cin >> choice;
+         if (choice == 1) {
 
-            hashed_ID = hash_value(machine_id, this->ID_space);//deriving hash of new ID
-        }
+         }
+         else if (choice == 2) {
 
-        //------------------------------------------------------------------------------//
-    */
+         }
+         else if (choice == 3) {
 
-    //Menu
- /*   int choice = 0;
-    while (choice != 10) {
-        cout << "---------Menu-----------" << endl;
-        cout << "1) Specify the number of machines " << endl;
-        cout << "2) Specify the size of identifier space" << endl;
-        cout << "3) Manually assign Id to each machine" << endl;
-        cout << "4) Insert data in the form of key" << endl;
-        cout << "5) Remove data by specifying the key from any machine" << endl;
-        cout << "6) Print the routing table of any machine" << endl;
-        cout << "7) Print the AVL tree on any machine" << endl;
-        cout << "8) Add new machines" << endl;
-        cout << "9) Remove any machine" << endl;
-        cout << "10) Exit" << endl;
-        cout << endl;
-        cout << "Please select an option: ";
-        cin >> choice;
-        if (choice == 1) {
+         }
+         else if (choice == 4) {
 
-        }
-        else if (choice == 2) {
+         }
+         else if (choice == 5) {
 
-        }
-        else if (choice == 3) {
+         }
+         else if (choice == 6) {
 
-        }
-        else if (choice == 4) {
+         }
+         else if (choice == 7) {
 
-        }
-        else if (choice == 5) {
+         }
+         else if (choice == 8) {
 
-        }
-        else if (choice == 6) {
+         }
+         else if (choice == 9) {
 
-        }
-        else if (choice == 7) {
-
-        }
-        else if (choice == 8) {
-
-        }
-        else if (choice == 9) {
-
-        }
-        else if (choice == 10) {
-            break;
-        }
-        else {
-            cout << "Invalid option selected." << endl;
-        }
-    }*/
+         }
+         else if (choice == 10) {
+             break;
+         }
+         else {
+             cout << "Invalid option selected." << endl;
+         }
+     }*/
 }
 
 

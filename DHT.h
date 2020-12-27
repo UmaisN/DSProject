@@ -2,7 +2,7 @@
 #include"AVLTree.h"
 #include"Hashing.h"
 #include"InfInt.h"
-#include <ctime>
+#include<ctime>
 #include<cmath>
 #include<iostream>
 #include<fstream>
@@ -242,9 +242,16 @@ private:
 
 				return;
 			}
+			else if (hash_str > mach_node->ID && mach_node->next == this->head)
+			{
+				cout << "Data inserted at " << mach_node->ID_str << "(" << mach_node->ID << ")." << endl;
 
+				mach_node->insert(str_key, str_data);//Key value pair inserted at the machine
+
+				return;
+			}
 			//If inserted keys hash is equal to mach_node ID then its inserted on the machine
-			else if (hash_str == mach_node->ID)
+			else if (hash_str == mach_node->ID || mach_node == mach_node->next)
 			{
 				cout << "Data inserted at " << mach_node->ID_str << "(" << mach_node->ID << ")." << endl;
 
@@ -472,6 +479,47 @@ private:
 	}
 
 
+	//--------------------------------------------------------------------------------------------------------//
+
+	//This function will take two parameters.
+	//FIRST PARAMETER  = Old machine node's avl tree root.
+	//SECOND PARAMETER = AVL tree obj of old machine.
+	//THIRD PARAMETER  = Newly added machine's node pointer.
+	void insert_postorder(Node<T, S>*& tree_node, AVL<T, S>& tree, Machine_node<T, S>*& new_mach, Machine_node<T, S>*& old_mach)
+	{
+		if (tree_node == NULL)
+			return;
+
+		insert_postorder(tree_node->left, tree, new_mach, old_mach);
+		insert_postorder(tree_node->right, tree, new_mach, old_mach);
+
+		//cout << "(";
+		//cout << tree->key << "," << tree->data << ") ";
+
+		//If nodes hashed_key is <= new machines ID then value is deleted from
+		//this tree and added in new machine.
+		//cout << "hashed key = " << tree_node->hashed_key << " " << old_mach->ID << " " << endl;;
+		if (tree_node->hashed_key <= new_mach->ID && tree_node->hashed_key > old_mach->ID)
+		{
+
+			new_mach->insert(tree_node->original_key, tree_node->data);//inserting in new machine
+
+			tree.deleteNode(tree_node->original_key);//deleting current node from old machine
+		}
+
+	}
+
+	//This Function takes two neighboring machine node pointers as Paremeters and balances their AVL trees
+	//The first parametr in this case is the newly inserted node which will get its appropriate data from next 
+	//machine node, which supposedly has its data.-----------------------------------------------------------//
+	void update_trees_insert(Machine_node<T, S>* mach_node1, Machine_node<T, S>* mach_node2)
+	{	//(new_mach, new_mach->next);
+
+		//if(mach_node)
+
+		this->insert_postorder(mach_node2->Data_Tree.root, mach_node2->Data_Tree, mach_node1, mach_node2);
+	}
+
 public:
 
 	DHT()
@@ -573,19 +621,19 @@ public:
 	void insert_machine(string machine_id)
 	{
 
-
 		InfInt hash_id = hash_value(machine_id, this->ID_space);
 
+		if (this->check_ID(hash_id) == true)
+			return;
+
+
 		Machine_node<T, S>* new_mach = new Machine_node<T, S>(machine_id, hash_id, this->ID_space);
-		new_mach->next = NULL;
+		//new_mach->next = NULL;
 
 		if (head == NULL) //if list was empty head points to new machine
 		{
 			head = new_mach;
-			head->next = head;
-			head->prev = head;
-			tail = new_mach;
-
+			new_mach->next = head;
 		}
 		else if (head->next == head) //Handling second entry[When there is only one machine].
 		{
@@ -594,13 +642,13 @@ public:
 			{
 				head->next = new_mach;//head newx to new mach
 				new_mach->next = head;//new mach next to head because list is circular
-				new_mach->prev = head;
-				tail = new_mach;
+				//new_mach->prev = head;
+				//tail = new_mach;
 			}
 			else //if new mach ID < head ID
 			{
-				tail = head;
-				head->prev = new_mach;
+				//tail = head;
+				//head->prev = new_mach;
 				head->next = new_mach;
 				new_mach->next = head;
 				head = new_mach;
@@ -642,7 +690,8 @@ public:
 			}
 		}
 
-		//this->update_Data_trees(new_mach,new_mach->next);
+
+		this->update_trees_insert(new_mach, new_mach->next);
 
 		this->Update_Finger_Tables();//Updating finger tables
 	}
@@ -667,7 +716,10 @@ public:
 			else if (option == 2)
 			{
 				cout << "\nAVL : ";
-				nodeptr->Data_Tree.display();
+				if (nodeptr->Data_Tree.root != NULL)
+					nodeptr->Data_Tree.display();
+				else
+					cout << "AVL Tree is empty\n";
 				cout << endl;
 				cout << "File location : .\\" << nodeptr->ID_str << ".txt\n" << endl;
 			}
