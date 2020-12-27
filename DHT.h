@@ -238,6 +238,17 @@ private:
 			InfInt x = index;
 			if (x == FT_size - 1)
 			{	//If loop reaches last index then query is forwarded to last index
+
+				if (hash_str < mach_node->ID)
+				{
+					cout << "->Query arrived at " << head->ID_str << "(" << head->ID << ")." << endl;
+					cout << "Data inserted at " << head->ID_str << "(" << head->ID << ")." << endl;
+
+					this->head->insert(str_key, str_data);
+
+					return;
+				}
+
 				machine_insertdata(mach_node->FT.get_at(index), str_key, str_data);
 
 				return;
@@ -511,7 +522,7 @@ private:
 	void update_trees_insert(Machine_node<T, S>* mach_node1, Machine_node<T, S>* mach_node2)
 	{	//(new_mach, new_mach->next);
 
-		if (mach_node1 != mach_node1->next && mach_node1->Data_Tree.root!=NULL)
+		if (mach_node1 != mach_node1->next && mach_node1->Data_Tree.root != NULL)
 			this->insert_postorder(mach_node2->Data_Tree.root, mach_node2->Data_Tree, mach_node1, mach_node2);
 	}
 	//---------------------------------------------------------------------------------------------------------//
@@ -806,7 +817,7 @@ public:
 
 		while (nodeptr != head || loop_flag == false)
 		{
-			cout << nodeptr->ID_str <<" ("<<nodeptr->ID<<") ";// << nodeptr->prev->ID;
+			cout << nodeptr->ID_str << "(" << nodeptr->ID << ") ";// << nodeptr->prev->ID;
 			nodeptr->FT.display_FT();
 
 			nodeptr = nodeptr->next;

@@ -7,8 +7,7 @@ using namespace std;
 
 int main()
 {
-    
-    //cout << gen_random(10) << endl;
+    cout << gen_random(10) << endl;
 
     //DHT<int, string> mach;
 
@@ -100,33 +99,41 @@ int main()
 
     //InfInt y = 1024;
     //cout << log2(y) << endl;
+    cout << "1 " << hash_value("1", 4) << endl;
+    cout << "2 " << hash_value("2", 4) << endl;
+    cout << "3 " << hash_value("3", 4) << endl;
+    cout << "4 " << hash_value("4", 4) << endl;
+    cout << "5 " << hash_value("5", 4) << endl;
+    cout << "6 " << hash_value("6", 4) << endl;
+    cout << "7 " << hash_value("7", 4) << endl;
+    cout << "8 " << hash_value("8", 4) << endl;
+    cout << "8 " << hash_value("9", 4) << endl;
 
-    /*
-    cout << "M1 " << hash_value("M1", 4) << endl;
-    cout << "M2 " << hash_value("M2", 4) << endl;
-    cout << "M3 " << hash_value("M3", 4) << endl;
-    cout << "M4 " << hash_value("M4", 4) << endl;
-    cout << "M5 " << hash_value("M5", 4) << endl;
-    cout << "M8 " << hash_value("M8", 4) << endl;
     cout << "ibrahim : " << hash_value("ibrahim", 4) << endl;
-    cout << "Musa : " << hash_value("Musa", 4) << endl;
+    cout << "noveen : " << hash_value("noveen", 4) << endl;
 
-    DHT<int, string> obj(4);
-    
-    //obj.insert_machine("M1");
-    //obj.insert_machine("M2");
-    //obj.insert_machine("M3");
-    //obj.insert_machine("M4");   //id = 1
-    obj.insert_machine("M5");   //id = 5
-    obj.insert_machine("M7");*/
+    DHT<int, string>dht1(4);
+    dht1.insert_machine("1");
+    dht1.insert_machine("2");
+    dht1.insert_machine("3");
+    dht1.insert_machine("4");
+    dht1.insert_machine("5");
+    dht1.insert_machine("0");
+    //dht1.insert_machine("3");
+    dht1.insert_machine("4");
 
-    //obj.insert_from_machine("M5", "ibrahim", "aamer");
-    //obj.insert_from_machine("M5", "Musa", "hello");
-    //obj.display_a_machine("M5", 2);
 
-    //obj.insert_machine("M3");   //id = 15
-    //obj.insert_machine("M6");   //id = 15
-    //obj.insert_machine("M2");   //id = 15
+
+    dht1.display_machines();
+    cout << endl << endl << "Inserting Ibrahim's data" << endl;
+    dht1.insert_from_machine("0", "Ibrahim", "This is Ibrahim's Data");
+    cout << endl << endl << "Inserting Noveen's data" << endl;
+    dht1.insert_from_machine("2", "Noveen", "This is Noveen's Data");
+    cout << endl << endl << "Inserting Umais's data" << endl;
+    dht1.insert_from_machine("4", "Umais", "This is Umais's Data");
+    //obj.insert_machine("7");
+    //obj.insert_machine("3");   //id = 15
+   // obj.display_machines();
 
     //obj.insert_machine("M8");   //id = 15
 
@@ -154,19 +161,6 @@ int main()
 
         //------------------------------------------------------------------------------//
     */
-cout << " --------------------------------------------------" << endl;
-cout << "| EXAMPLE CODE FOR DHT USING 4 BIT IDENTIFIER SPACE |" << endl;
-cout << " --------------------------------------------------" << endl;
-
-DHT<int, string>dht1(4);
-dht1.insert_machine("1");
-dht1.insert_machine("4");
-dht1.insert_machine("9");
-dht1.insert_machine("16");
-
-
-dht1.display_machines();
-
 
     //Menu
  /*   int choice = 0;
