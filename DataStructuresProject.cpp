@@ -7,7 +7,8 @@ using namespace std;
 
 int main()
 {
-    cout << gen_random(10) << endl;
+    
+    //cout << gen_random(10) << endl;
 
     //DHT<int, string> mach;
 
@@ -100,6 +101,7 @@ int main()
     //InfInt y = 1024;
     //cout << log2(y) << endl;
 
+    /*
     cout << "M1 " << hash_value("M1", 4) << endl;
     cout << "M2 " << hash_value("M2", 4) << endl;
     cout << "M3 " << hash_value("M3", 4) << endl;
@@ -110,21 +112,21 @@ int main()
     cout << "Musa : " << hash_value("Musa", 4) << endl;
 
     DHT<int, string> obj(4);
-
+    
     //obj.insert_machine("M1");
     //obj.insert_machine("M2");
     //obj.insert_machine("M3");
     //obj.insert_machine("M4");   //id = 1
     obj.insert_machine("M5");   //id = 5
-    obj.insert_machine("M7");
+    obj.insert_machine("M7");*/
 
     //obj.insert_from_machine("M5", "ibrahim", "aamer");
     //obj.insert_from_machine("M5", "Musa", "hello");
     //obj.display_a_machine("M5", 2);
 
-    obj.insert_machine("M3");   //id = 15
-    obj.insert_machine("M6");   //id = 15
-    obj.insert_machine("M2");   //id = 15
+    //obj.insert_machine("M3");   //id = 15
+    //obj.insert_machine("M6");   //id = 15
+    //obj.insert_machine("M2");   //id = 15
 
     //obj.insert_machine("M8");   //id = 15
 
@@ -152,6 +154,19 @@ int main()
 
         //------------------------------------------------------------------------------//
     */
+cout << " --------------------------------------------------" << endl;
+cout << "| EXAMPLE CODE FOR DHT USING 4 BIT IDENTIFIER SPACE |" << endl;
+cout << " --------------------------------------------------" << endl;
+
+DHT<int, string>dht1(4);
+dht1.insert_machine("1");
+dht1.insert_machine("4");
+dht1.insert_machine("9");
+dht1.insert_machine("16");
+
+
+dht1.display_machines();
+
 
     //Menu
  /*   int choice = 0;

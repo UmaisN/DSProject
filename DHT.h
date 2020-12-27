@@ -511,7 +511,7 @@ private:
 	void update_trees_insert(Machine_node<T, S>* mach_node1, Machine_node<T, S>* mach_node2)
 	{	//(new_mach, new_mach->next);
 
-		if (mach_node1 != mach_node1->next)
+		if (mach_node1 != mach_node1->next && mach_node1->Data_Tree.root!=NULL)
 			this->insert_postorder(mach_node2->Data_Tree.root, mach_node2->Data_Tree, mach_node1, mach_node2);
 	}
 	//---------------------------------------------------------------------------------------------------------//
@@ -806,7 +806,7 @@ public:
 
 		while (nodeptr != head || loop_flag == false)
 		{
-			cout << nodeptr->ID_str << "prev : ";// << nodeptr->prev->ID;
+			cout << nodeptr->ID_str <<" ("<<nodeptr->ID<<") ";// << nodeptr->prev->ID;
 			nodeptr->FT.display_FT();
 
 			nodeptr = nodeptr->next;
