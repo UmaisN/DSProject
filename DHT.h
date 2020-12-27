@@ -156,31 +156,7 @@ private:
 	}
 	//----------------------------------------------------------------------------------//
 
-	//Function to check repeatition of hash ID 
-	//If it repeats it returns true else false
-	bool check_ID(InfInt hash_ID)
-	{
-		if (this->head != NULL)
-		{
-			Machine_node<T, S>* nodeptr = head;//pointer to iterate over linked list of machines
 
-			bool loop_flag = false;//Flag variable to make sure loop doesnt iterarte more than once over the list
-						   //because its a circular list
-
-			while (nodeptr != head || loop_flag == false)
-			{
-				if (nodeptr->ID == hash_ID)
-				{
-					return true;//True returned on finding a match
-				}
-
-				nodeptr = nodeptr->next;
-				loop_flag = true;
-			}
-		}
-
-		return false;//if no match found false returned.
-	}
 
 	//Function to check repeatition of hash ID 
 	//If it repeats it returns true else false
@@ -239,15 +215,14 @@ private:
 			if (x == FT_size - 1)
 			{	//If loop reaches last index then query is forwarded to last index
 
-				if (hash_str < mach_node->ID)
-				{
-					cout << "->Query arrived at " << head->ID_str << "(" << head->ID << ")." << endl;
-					cout << "Data inserted at " << head->ID_str << "(" << head->ID << ")." << endl;
 
-					this->head->insert(str_key, str_data);
+				cout << "->Query arrived at " << head->ID_str << "(" << head->ID << ")." << endl;
+				cout << "Data inserted at " << head->ID_str << "(" << head->ID << ")." << endl;
 
-					return;
-				}
+				this->head->insert(str_key, str_data);
+
+				return;
+
 
 				machine_insertdata(mach_node->FT.get_at(index), str_key, str_data);
 
@@ -328,6 +303,26 @@ private:
 			InfInt x = index;
 			if (x == FT_size - 1)
 			{	//If loop reaches last index then query is forwarded to last index
+
+				cout << "->Query arrived at " << head->ID_str << "(" << head->ID << ")." << endl;
+				cout << "->Looking for searched key at " << head->ID_str << "(" << head->ID << ")." << endl;
+
+				Node<T, S>* search = head->Data_Tree.searchNode(str_key);//searching given key at AVL of mach node
+
+				if (search == NULL)
+				{
+					cout << "\nYour search did not match any Key in data ! " << endl;
+				}
+				else
+				{
+					cout << "\nSEARCHED MACTHED !\n\nData : \n\n";
+					cout << search->display();//if search found then AVL node info is displayed
+					cout << endl;
+				}
+
+				return;
+
+
 				machine_searchdata(mach_node->FT.get_at(index), str_key);
 
 				return;
@@ -421,9 +416,32 @@ private:
 			InfInt x = index;
 			if (x == FT_size - 1)
 			{	//If loop reaches last index then query is forwarded to last index
-				machine_removedata(mach_node->FT.get_at(index), str_key);
+
+				Machine_node<T, S>* tmp = mach_node->FT.get_at(1);
+
+				cout << "->Query arrived at " << head->ID_str << "(" << head->ID << ")." << endl;
+				cout << "->Looking for searched key at " << head->ID_str << "(" << head->ID << ")." << endl;
+
+				Node<T, S>* search = head->Data_Tree.searchNode(str_key);//searching given key at AVL of mach node
+
+				if (search == NULL)
+				{
+					cout << "\nYour search did not match any Key in data ! " << endl;
+				}
+				else
+				{
+					cout << "\nKEY MACTHED !\n\nData : \n\n";
+					cout << search->display();//if search found then AVL node info is displayed
+					cout << endl;
+					head->Data_Tree.deleteNode(str_key);//now deleting
+					cout << "\nKey deleted successfully !" << endl;
+				}
 
 				return;
+
+				//machine_removedata(mach_node->FT.get_at(index), str_key);
+
+				//return;
 			}
 
 			//If inserted keys hash is equal to mach_node ID then its inserted on the machine
@@ -824,6 +842,32 @@ public:
 			loop_flag = true;
 		}
 		cout << endl;
+	}
+
+	//Function to check repeatition of hash ID 
+//If it repeats it returns true else false
+	bool check_ID(InfInt hash_ID)
+	{
+		if (this->head != NULL)
+		{
+			Machine_node<T, S>* nodeptr = head;//pointer to iterate over linked list of machines
+
+			bool loop_flag = false;//Flag variable to make sure loop doesnt iterarte more than once over the list
+						   //because its a circular list
+
+			while (nodeptr != head || loop_flag == false)
+			{
+				if (nodeptr->ID == hash_ID)
+				{
+					return true;//True returned on finding a match
+				}
+
+				nodeptr = nodeptr->next;
+				loop_flag = true;
+			}
+		}
+
+		return false;//if no match found false returned.
 	}
 
 };
