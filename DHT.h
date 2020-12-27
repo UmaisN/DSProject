@@ -485,6 +485,7 @@ private:
 	//FIRST PARAMETER  = Old machine node's avl tree root.
 	//SECOND PARAMETER = AVL tree obj of old machine.
 	//THIRD PARAMETER  = Newly added machine's node pointer.
+	//FOURTH PARAMETER = Old machine's node pointer.
 	void insert_postorder(Node<T, S>*& tree_node, AVL<T, S>& tree, Machine_node<T, S>*& new_mach, Machine_node<T, S>*& old_mach)
 	{
 		if (tree_node == NULL)
@@ -493,12 +494,7 @@ private:
 		insert_postorder(tree_node->left, tree, new_mach, old_mach);
 		insert_postorder(tree_node->right, tree, new_mach, old_mach);
 
-		//cout << "(";
-		//cout << tree->key << "," << tree->data << ") ";
 
-		//If nodes hashed_key is <= new machines ID then value is deleted from
-		//this tree and added in new machine.
-		//cout << "hashed key = " << tree_node->hashed_key << " " << old_mach->ID << " " << endl;;
 		if (tree_node->hashed_key <= new_mach->ID && tree_node->hashed_key > old_mach->ID)
 		{
 
@@ -515,9 +511,30 @@ private:
 	void update_trees_insert(Machine_node<T, S>* mach_node1, Machine_node<T, S>* mach_node2)
 	{	//(new_mach, new_mach->next);
 
-		//if(mach_node)
+		if (mach_node1 != mach_node1->next)
+			this->insert_postorder(mach_node2->Data_Tree.root, mach_node2->Data_Tree, mach_node1, mach_node2);
+	}
+	//---------------------------------------------------------------------------------------------------------//
+	//This function will take two parameters.
+	//FIRST PARAMETER  = Deleted machine node's avl tree root.
+	//SECOND PARAMETER = AVL tree obj of old machine.
+	//THIRD PARAMETER  = Newly added machine's node pointer.
+	//FOURTH PARAMETER  = Old machine's node pointer.
+	void delete_postorder(Node<T, S>*& tree_node, AVL<T, S>& tree, Machine_node<T, S>*& next_mach, Machine_node<T, S>*& old_mach)
+	{
+		if (tree_node == NULL)
+			return;
 
-		this->insert_postorder(mach_node2->Data_Tree.root, mach_node2->Data_Tree, mach_node1, mach_node2);
+		delete_postorder(tree_node->left, tree, next_mach, old_mach);
+		delete_postorder(tree_node->right, tree, next_mach, old_mach);
+
+		//All data on the old node(Node to be deleted) will be pushed to the next neighboring node
+		//and will be deleted from here.
+
+		next_mach->insert(tree_node->original_key, tree_node->data);//Inserting in new machine.
+
+		tree.deleteNode(tree_node->original_key);//Deleting current node from old machine.
+
 	}
 
 public:
@@ -553,6 +570,52 @@ public:
 			//given machine.
 			this->machine_insertdata(mach_ptr, str_key, str_data);
 
+		}
+		else
+		{
+			//If mach_ptr == NULL, it means search in Machine list failed to locate any machine with given ID
+			//Therefore prompt user that no Machine exists with that Data
+
+			cout << "No Machine registered with the given ID" << endl;
+		}
+	}
+
+	//This function is public and takes machine ID string to insert data in system from any machine.
+	//Takes key, value pairs as a parameter.
+	void delete_machine(string machine_id)
+	{
+		InfInt hash_key = hash_value(machine_id, this->ID_space);//hashing the given ID of Machine
+
+		Machine_node<T, S>* mach_ptr = this->search_ID(hash_key);//looking for derived hash key in Machine List
+
+		//If there is only one machine in system then no need to adjust AVL
+		if (mach_ptr == mach_ptr->next)
+		{
+			//delete mach_ptr;
+			mach_ptr = NULL;
+			this->head = NULL;
+		}
+		//If machine with the given ID is found then deletion starts from their
+		else if (mach_ptr != NULL)
+		{
+			//Recursive function called which looks for the right
+			//right machine to delete from DHT
+			this->delete_postorder(mach_ptr->Data_Tree.root, mach_ptr->Data_Tree, mach_ptr->next, mach_ptr);
+
+			//Now that AVL data has been moved to the next machine's data.
+			//We will remove mach_ptr from linked list
+			Machine_node<T, S>* nodeptr = this->head;
+
+			//Iterating over machine linked list.
+			while (nodeptr->next != this->head)
+			{
+				//Creating a link between mach->prev and mach->next
+				if (nodeptr->next == mach_ptr)
+				{
+					nodeptr->next = mach_ptr->next; //link made, and mach_ptr removed from list
+					break;
+				}
+			}
 		}
 		else
 		{

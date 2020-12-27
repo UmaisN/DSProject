@@ -105,7 +105,7 @@ int main()
     cout << "M3 " << hash_value("M3", 4) << endl;
     cout << "M4 " << hash_value("M4", 4) << endl;
     cout << "M5 " << hash_value("M5", 4) << endl;
-    cout << "M6 " << hash_value("M7", 4) << endl;
+    cout << "M8 " << hash_value("M8", 4) << endl;
     cout << "ibrahim : " << hash_value("ibrahim", 4) << endl;
     cout << "Musa : " << hash_value("Musa", 4) << endl;
 
@@ -116,90 +116,94 @@ int main()
     //obj.insert_machine("M3");
     //obj.insert_machine("M4");   //id = 1
     obj.insert_machine("M5");   //id = 5
-    //obj.insert_machine("M7");
+    obj.insert_machine("M7");
 
-    obj.insert_from_machine("M5", "ibrahim", "aamer");
-    obj.insert_from_machine("M5", "Musa", "hello");
-    obj.display_a_machine("M5", 2);
+    //obj.insert_from_machine("M5", "ibrahim", "aamer");
+    //obj.insert_from_machine("M5", "Musa", "hello");
+    //obj.display_a_machine("M5", 2);
 
     obj.insert_machine("M3");   //id = 15
+    obj.insert_machine("M6");   //id = 15
+    obj.insert_machine("M2");   //id = 15
 
-    obj.display_a_machine("M3", 2);
+    //obj.insert_machine("M8");   //id = 15
 
-    obj.display_a_machine("M5", 2);
+    //obj.display_a_machine("M3", 2);
 
-
-    // obj.insert_machine("M4");   //id = 1
-
-     /*	//----------INPUT VALIDATION IF USER ENTERS AN ID WHICH ALREADY EXIST-----------//
-
-         InfInt hashed_ID = hash_value(machine_id, this->ID_space);
+    //obj.display_a_machine("M5", 2);
 
 
-         while (this->check_ID(hashed_ID)) //Loop runs until a new ID is entered
-         {
-             cout << "Entered ID already exists !" << endl;
-             cout << "    Kindly Enter a new ID : ";
-             cin >> machine_id;
 
-             hashed_ID = hash_value(machine_id, this->ID_space);//deriving hash of new ID
-         }
+   // obj.insert_machine("M4");   //id = 1
 
-         //------------------------------------------------------------------------------//
-     */
+    /*	//----------INPUT VALIDATION IF USER ENTERS AN ID WHICH ALREADY EXIST-----------//
 
-     //Menu
-  /*   int choice = 0;
-     while (choice != 10) {
-         cout << "---------Menu-----------" << endl;
-         cout << "1) Specify the number of machines " << endl;
-         cout << "2) Specify the size of identifier space" << endl;
-         cout << "3) Manually assign Id to each machine" << endl;
-         cout << "4) Insert data in the form of key" << endl;
-         cout << "5) Remove data by specifying the key from any machine" << endl;
-         cout << "6) Print the routing table of any machine" << endl;
-         cout << "7) Print the AVL tree on any machine" << endl;
-         cout << "8) Add new machines" << endl;
-         cout << "9) Remove any machine" << endl;
-         cout << "10) Exit" << endl;
-         cout << endl;
-         cout << "Please select an option: ";
-         cin >> choice;
-         if (choice == 1) {
+        InfInt hashed_ID = hash_value(machine_id, this->ID_space);
 
-         }
-         else if (choice == 2) {
 
-         }
-         else if (choice == 3) {
+        while (this->check_ID(hashed_ID)) //Loop runs until a new ID is entered
+        {
+            cout << "Entered ID already exists !" << endl;
+            cout << "    Kindly Enter a new ID : ";
+            cin >> machine_id;
 
-         }
-         else if (choice == 4) {
+            hashed_ID = hash_value(machine_id, this->ID_space);//deriving hash of new ID
+        }
 
-         }
-         else if (choice == 5) {
+        //------------------------------------------------------------------------------//
+    */
 
-         }
-         else if (choice == 6) {
+    //Menu
+ /*   int choice = 0;
+    while (choice != 10) {
+        cout << "---------Menu-----------" << endl;
+        cout << "1) Specify the number of machines " << endl;
+        cout << "2) Specify the size of identifier space" << endl;
+        cout << "3) Manually assign Id to each machine" << endl;
+        cout << "4) Insert data in the form of key" << endl;
+        cout << "5) Remove data by specifying the key from any machine" << endl;
+        cout << "6) Print the routing table of any machine" << endl;
+        cout << "7) Print the AVL tree on any machine" << endl;
+        cout << "8) Add new machines" << endl;
+        cout << "9) Remove any machine" << endl;
+        cout << "10) Exit" << endl;
+        cout << endl;
+        cout << "Please select an option: ";
+        cin >> choice;
+        if (choice == 1) {
 
-         }
-         else if (choice == 7) {
+        }
+        else if (choice == 2) {
 
-         }
-         else if (choice == 8) {
+        }
+        else if (choice == 3) {
 
-         }
-         else if (choice == 9) {
+        }
+        else if (choice == 4) {
 
-         }
-         else if (choice == 10) {
-             break;
-         }
-         else {
-             cout << "Invalid option selected." << endl;
-         }
-     }*/
+        }
+        else if (choice == 5) {
+
+        }
+        else if (choice == 6) {
+
+        }
+        else if (choice == 7) {
+
+        }
+        else if (choice == 8) {
+
+        }
+        else if (choice == 9) {
+
+        }
+        else if (choice == 10) {
+            break;
+        }
+        else {
+            cout << "Invalid option selected." << endl;
+        }
+    }*/
 }
-
 
 
